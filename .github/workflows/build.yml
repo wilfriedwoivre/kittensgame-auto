@@ -1,0 +1,36 @@
+name: Build on push
+
+on: 
+  push: 
+    branches: 
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Use Node.js 19.x"
+        uses: actions/setup-node@master
+        with:
+          node-version: 19.x
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Release kittens manager
+        uses: marvinpinto/action-automatic-release@latest
+        with: 
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Dev build"
+          files: |
+            dist/*

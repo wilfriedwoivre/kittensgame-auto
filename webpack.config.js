@@ -4,10 +4,11 @@ const path = require("path");
 
 const isProduction = process.env.NODE_ENV == "production";
 
-const config = {
+const baseConfig = {
   entry: "./src/index.ts",
   output: {
-    path: path.resolve(__dirname, "dist")
+    path: path.resolve(__dirname, "dist", ),
+    clean: true
   },
   plugins: [
     // Add your plugins here
@@ -34,11 +35,27 @@ const config = {
   },
 };
 
+const devConfig = {
+  ...baseConfig,
+  mode: "development",
+  output: {
+    filename: 'kittens-manager.js'
+  }
+
+}
+
+const prodConfig = {
+  ...baseConfig,
+  mode: "production",
+  output: {
+    filename: 'kittens-manager.min.js'
+  }
+}
+
 module.exports = () => {
   if (isProduction) {
-    config.mode = "production";
+    return [devConfig, prodConfig];
   } else {
-    config.mode = "development";
+    return devConfig;
   }
-  return config;
 };
