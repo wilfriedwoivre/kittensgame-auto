@@ -1,3 +1,3 @@
 export type GamePage = {
-    colorScheme: string;
+    toggleScheme: (value: string) => void;
 };

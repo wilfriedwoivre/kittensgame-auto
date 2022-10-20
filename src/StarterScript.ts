@@ -6,7 +6,7 @@ import { sleep } from "./tools/Sleep";
 
 import { GamePage } from "./types/gamePage";
 
-import { EngineState } from "./Engine";
+import { EngineState, Engine } from "./Engine";
 
 declare global {
     let unsafeWindow: Window | undefined;
@@ -30,15 +30,22 @@ export class StarterScript {
 
 
     readonly gamePage: GamePage;
+    engine: Engine;
 
     constructor(
         gamePage: GamePage,
-      )
-      {
+    ) {
         this.gamePage = gamePage;
+    }
 
-        this.gamePage.colorScheme = "dark";
-      }
+    run(): void {
+        this.gamePage.toggleScheme("dark");
+    }
+
+    setSettings(settings: EngineState) {
+        cinfo("Loading engine state...");
+        this.engine.stateLoad(settings);
+    }
 
     private static _tryEngineStateFromSaveData(
         saveData: Record<string, unknown>
@@ -112,6 +119,27 @@ export class StarterScript {
 
         await Promise.race(signals);
         return StarterScript.waitForGame(timeout - 2000);
+    }
+
+    static getDefaultInstance(): StarterScript {
+        const instance = new StarterScript(
+            mustExist(StarterScript.window.gamePage),
+        );
+
+        // We can already attempt to load the possible engine state and see if this produces errors.
+        // As the startup is orchestrated right now by `index.ts`, if there are legacy options, they
+        // will be loaded into the instance after we return it from here.
+        // Thus, legacy options will overrule modern settings, if they are present.
+        if (!isNil(StarterScript._possibleEngineState)) {
+            try {
+                instance.setSettings(StarterScript._possibleEngineState);
+            } catch (error) {
+                cerror("The previous engine state could not be processed!", error);
+            }
+        }
+
+        //instance.installSaveManager();
+        return instance;
     }
 
     private static _isGameLoaded(): boolean {
