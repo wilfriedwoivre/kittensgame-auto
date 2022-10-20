@@ -28,6 +28,18 @@ export class StarterScript {
     private static _gameStartSignalResolver: undefined | ((value: boolean) => void);
     private static _possibleEngineState: EngineState | undefined = undefined;
 
+
+    readonly gamePage: GamePage;
+
+    constructor(
+        gamePage: GamePage,
+      )
+      {
+        this.gamePage = gamePage;
+
+        this.gamePage.colorScheme = "dark";
+      }
+
     private static _tryEngineStateFromSaveData(
         saveData: Record<string, unknown>
     ): EngineState | undefined {
