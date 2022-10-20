@@ -1,6 +1,16 @@
 import { Hello } from "./hello";
+import { cerror } from "./tools/Log";
 
-const hello = new Hello();
+import { StarterScript } from "./StarterScript";
 
-hello.hello();
-hello.hello("kittens");
+(async () => {
+    const kittenGame = await StarterScript.waitForGame();
+
+    const hello = new Hello();
+
+    hello.hello();
+    hello.hello("kittens");
+})().catch(cerror);
+
+
+
