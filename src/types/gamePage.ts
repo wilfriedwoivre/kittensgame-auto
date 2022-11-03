@@ -3,5 +3,5 @@ export type GamePage = {
     console: {
         maxMessages: number;
     }
-
+    msg: (msg: string, type: string, tag: string, noBullet: boolean) => { span: HTMLElement };
 };

@@ -50,8 +50,16 @@ export class UserScript {
 
 
     run(): void {
+        this.printMessage("Update default color");
         this.gamePage.toggleScheme("dark");
+        
+        this.printMessage("Update Max messages");
         this.gamePage.console.maxMessages = 1000;
+    }
+
+    private printMessage(msg: string) {
+        var item = this.gamePage.msg(msg, "", "", true);
+        $(item.span).css("color", "#009933");
     }
 
 
