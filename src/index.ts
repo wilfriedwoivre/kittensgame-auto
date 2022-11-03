@@ -1,15 +1,13 @@
-import { Hello } from "./hello";
 import { cerror } from "./tools/Log";
 
-import { StarterScript } from "./StarterScript";
+import { UserScript } from "./UserScript";
 import { start } from "repl";
 
 (async () => {
-    const kittenGame = await StarterScript.waitForGame();
+    const kittenGame = await UserScript.waitForGame();
 
-    const starterScript = StarterScript.getDefaultInstance();
+    const starterScript = UserScript.getDefaultInstance();
 
-    new Hello().hello("Kittens Manager");
     starterScript.run();
 
 })().catch(cerror);

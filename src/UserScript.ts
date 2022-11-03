@@ -1,12 +1,12 @@
 import JQuery from "jquery";
 
-import { cdebug, cerror, cinfo, cwarn } from "./tools/Log";
-import { isNil, Maybe, mustExist } from "./tools/Maybe";
-import { sleep } from "./tools/Sleep";
-
 import { GamePage } from "./types/gamePage";
 
-import { EngineState, Engine } from "./Engine";
+import { Engine, EngineState } from "Engine";
+
+import { Maybe, isNil, mustExist } from "./tools/Maybe";
+import { cerror, cdebug, cinfo } from "./tools/Log";
+import { sleep } from "./tools/Sleep";
 
 declare global {
     let unsafeWindow: Window | undefined;
@@ -20,7 +20,7 @@ declare global {
     }
 }
 
-export class StarterScript {
+export class UserScript {
     /**
      * Stores if we caught the `game/start` signal from the game.
      */
@@ -30,22 +30,30 @@ export class StarterScript {
 
 
     readonly gamePage: GamePage;
+
     engine: Engine;
 
     constructor(
         gamePage: GamePage,
     ) {
         this.gamePage = gamePage;
+
     }
 
-    run(): void {
-        this.gamePage.toggleScheme("dark");
+    getSettings() {
+        return this.engine.stateSerialize();
     }
-
     setSettings(settings: EngineState) {
         cinfo("Loading engine state...");
         this.engine.stateLoad(settings);
     }
+
+
+    run(): void {
+        this.gamePage.toggleScheme("dark");
+        this.gamePage.console.maxMessages = 1000;
+    }
+
 
     private static _tryEngineStateFromSaveData(
         saveData: Record<string, unknown>
@@ -73,24 +81,24 @@ export class StarterScript {
     static async waitForGame(timeout = 30000): Promise<GamePage> {
         const signals: Array<Promise<unknown>> = [sleep(2000)];
 
-        if (isNil(StarterScript._gameStartSignal) && typeof StarterScript.window.dojo !== "undefined") {
-            StarterScript._gameStartSignal = new Promise((resolve) => {
-                StarterScript._gameStartSignalResolver = resolve;
+        if (isNil(UserScript._gameStartSignal) && typeof UserScript.window.dojo !== "undefined") {
+            UserScript._gameStartSignal = new Promise((resolve) => {
+                UserScript._gameStartSignalResolver = resolve;
             });
 
-            StarterScript.window.dojo.subscribe("game/start", () => {
+            UserScript.window.dojo.subscribe("game/start", () => {
                 cdebug("`game/start` signal caught. Fast-tracking script load...");
-                mustExist(StarterScript._gameStartSignalResolver)(true);
+                mustExist(UserScript._gameStartSignalResolver)(true);
             });
 
-            StarterScript.window.dojo.subscribe(
+            UserScript.window.dojo.subscribe(
                 "server/load",
                 (saveData: { ks?: { state?: Array<EngineState> } }) => {
                     cinfo(
                         "EXPERIMENTAL: `server/load` signal caught. Looking for Kitten Scientists engine state in save data..."
                     );
 
-                    const state = StarterScript._tryEngineStateFromSaveData(saveData);
+                    const state = UserScript._tryEngineStateFromSaveData(saveData);
                     if (!state) {
                         return;
                     }
@@ -98,41 +106,41 @@ export class StarterScript {
                     cinfo(
                         "EXPERIMENTAL: Found! Provided save data will be used as seed for next userscript instance."
                     );
-                    StarterScript._possibleEngineState = state;
+                    UserScript._possibleEngineState = state;
                 }
             );
         }
 
-        if (!isNil(StarterScript._gameStartSignal)) {
-            signals.push(StarterScript._gameStartSignal);
+        if (!isNil(UserScript._gameStartSignal)) {
+            signals.push(UserScript._gameStartSignal);
         }
 
         if (timeout < 0) {
             throw new Error("Unable to find game page. Giving up.");
         }
 
-        if (StarterScript._isGameLoaded()) {
-            return mustExist(StarterScript.window.gamePage);
+        if (UserScript._isGameLoaded()) {
+            return mustExist(UserScript.window.gamePage);
         }
 
         cdebug(`Waiting for game... (timeout: ${Math.round(timeout / 1000)}s)`);
 
         await Promise.race(signals);
-        return StarterScript.waitForGame(timeout - 2000);
+        return UserScript.waitForGame(timeout - 2000);
     }
 
-    static getDefaultInstance(): StarterScript {
-        const instance = new StarterScript(
-            mustExist(StarterScript.window.gamePage),
+    static getDefaultInstance(): UserScript {
+        const instance = new UserScript(
+            mustExist(UserScript.window.gamePage),
         );
 
         // We can already attempt to load the possible engine state and see if this produces errors.
         // As the startup is orchestrated right now by `index.ts`, if there are legacy options, they
         // will be loaded into the instance after we return it from here.
         // Thus, legacy options will overrule modern settings, if they are present.
-        if (!isNil(StarterScript._possibleEngineState)) {
+        if (!isNil(UserScript._possibleEngineState)) {
             try {
-                instance.setSettings(StarterScript._possibleEngineState);
+                instance.setSettings(UserScript._possibleEngineState);
             } catch (error) {
                 cerror("The previous engine state could not be processed!", error);
             }
@@ -143,7 +151,7 @@ export class StarterScript {
     }
 
     private static _isGameLoaded(): boolean {
-        return !isNil(StarterScript.window.gamePage);
+        return !isNil(UserScript.window.gamePage);
     }
 
     static get window(): Window {
