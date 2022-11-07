@@ -4,6 +4,8 @@ import { GamePage } from "./types/gamePage";
 
 import { Engine, EngineState } from "Engine";
 
+import { UserInterface } from "./ui/UserInterface";
+
 import { Maybe, isNil, mustExist } from "./tools/Maybe";
 import { cerror, cdebug, cinfo } from "./tools/Log";
 import { sleep } from "./tools/Sleep";
@@ -32,11 +34,15 @@ export class UserScript {
     readonly gamePage: GamePage;
 
     engine: Engine;
+    private _userInterface : UserInterface
 
     constructor(
         gamePage: GamePage,
     ) {
         this.gamePage = gamePage;
+
+        this._userInterface = new UserInterface();
+        this._userInterface.construct();
 
     }
 
@@ -55,6 +61,8 @@ export class UserScript {
         
         this.printMessage("Update Max messages");
         this.gamePage.console.maxMessages = 1000;
+
+        
     }
 
     private printMessage(msg: string) {
