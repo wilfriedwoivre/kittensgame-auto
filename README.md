@@ -1,15 +1,11 @@
-# 🚀 Welcome to your new awesome project!
+# Learning Typescript
 
-This project has been created using **webpack-cli**, you can now run
+## Automation of https://kittensgame.com/
 
-```
-npm run build
-```
+Inspired by amazing work from https://github.com/kitten-science/kitten-scientists
 
-or
+## Current Status
 
-```
-yarn build
-```
-
-to bundle your application
+- Force dark theme
+- Increase Console Log messages
+- Display an interface to add some Quality Of Life options (Not active)
