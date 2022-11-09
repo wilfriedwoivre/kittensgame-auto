@@ -2,7 +2,7 @@ import JQuery from "jquery";
 
 import { GamePage } from "./types/gamePage";
 
-import { Engine, EngineState } from "Engine";
+import { Engine, EngineState } from "./Engine";
 
 import { UserInterface } from "./ui/UserInterface";
 
@@ -41,7 +41,8 @@ export class UserScript {
     ) {
         this.gamePage = gamePage;
 
-        this._userInterface = new UserInterface();
+        this.engine = new Engine(this);
+        this._userInterface = new UserInterface(this);
         this._userInterface.construct();
 
     }

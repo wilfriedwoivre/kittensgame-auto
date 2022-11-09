@@ -1,14 +1,17 @@
 import { isNil, mustExist } from "../tools/Maybe";
 import { QoLSettingsUi } from "./QoLSettingsUi"
+import { UserScript } from '../UserScript';
 
 export class UserInterface {
 
     private _qolUi: QoLSettingsUi;
+    private _host: UserScript;
 
-    constructor() {
+    constructor(host: UserScript) {
+        this._host = host;
         this._addCss();
 
-        this._qolUi = new QoLSettingsUi();
+        this._qolUi = new QoLSettingsUi(this._host, this._host.engine.qolManager.settings);
     }
 
 
