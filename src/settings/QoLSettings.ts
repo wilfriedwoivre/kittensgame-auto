@@ -1,4 +1,4 @@
-import { Setting, SettingMaxOption, Settings } from './Setting';
+import { Setting, SettingPercentageOption, Settings } from './Setting';
 
 export type QoLItemSettings = Record<string, Setting>
 
@@ -8,7 +8,7 @@ export class QoLSettings implements Settings<QoLItemSettings>
 
     constructor(
         qolItems: QoLItemSettings = {
-            autoGather: new SettingMaxOption("Auto Gathering", false, 1000),
+            autoGather: new SettingPercentageOption("Auto Gathering", false, 10),
             observe: new Setting("Auto Observing", true)
         }
     ) {

@@ -63,6 +63,8 @@ export class UserScript {
         this.printMessage("Update Max messages");
         this.gamePage.console.maxMessages = 1000;
 
+        this.engine.start();
+
         
     }
 

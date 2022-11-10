@@ -8,12 +8,12 @@ export class Setting {
     }
 }
 
-export class SettingMaxOption extends Setting {
-    max: number;
+export class SettingPercentageOption extends Setting {
+    percentage: number;
 
-    constructor(label: string, enabled = false, max = 1) {
+    constructor(label: string, enabled = false, percentage = 0) {
         super(label, enabled);
-        this.max = max;
+        this.percentage = percentage;
     }
 }
 
