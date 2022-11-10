@@ -2,7 +2,7 @@
 
 ## Automation of https://kittensgame.com/
 
-Inspired by amazing work from https://github.com/kitten-science/kitten-scientists
+Inspired by amazing work from [Kittens Science](https://github.com/kitten-science/kitten-scientists)
 
 ## Current Feature
 
@@ -12,8 +12,9 @@ Inspired by amazing work from https://github.com/kitten-science/kitten-scientist
 - [Engine] Auto Gathering if you have less than a percentage of your capacity
 - [Global] Implement Save / Load for settings
 
-
 ## Next Todo (not all the stuff)
 
 - [UI] Add way to update settings for percentage parameter
 - [Engine] Implement Auto Observe event
+- [UI] Add auto construct of building
+- [Engine] Add auto construct of catnip field

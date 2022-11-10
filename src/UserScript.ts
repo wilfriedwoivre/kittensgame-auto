@@ -27,7 +27,7 @@ export class UserScript {
     private static _gameStartSignal: Promise<boolean>;
     private static _gameStartSignalResolver: undefined | ((value: boolean) => void);
 
-    private static readonly cookieName = "kam";
+    private static readonly localStorageName = "kam";
     static _possibleEngineState : EngineState = undefined; 
 
 
@@ -132,16 +132,17 @@ export class UserScript {
     }
 
     private static _loadEngineStateFromCookie() {
-        if (document.cookie.indexOf(this.cookieName) == -1) {
+        if (isNil(localStorage.getItem(this.localStorageName))) {
             this._possibleEngineState = Engine.newState()
         }
         else {
-            var cookieData = decodeURIComponent(document.cookie).split(';')[document.cookie.indexOf(this.cookieName)].split("=")[1];
-            this._possibleEngineState = JSON.parse(cookieData) as EngineState;
+            
+            var state = localStorage.getItem(this.localStorageName);
+            this._possibleEngineState = JSON.parse(state) as EngineState;
         }
     }
 
     saveEngineState() {
-        document.cookie = UserScript.cookieName + "=" + JSON.stringify(this.engine.stateSerialize());
+        localStorage.setItem(UserScript.localStorageName, JSON.stringify(this.engine.stateSerialize()));
     }
 }

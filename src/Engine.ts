@@ -12,7 +12,7 @@ export class Engine {
     readonly _host: UserScript;
     qolManager: QoLManager;
 
-    private _interval = 1000;
+    private _interval = 50;
 
     constructor(host: UserScript) {
         this._host = host;
