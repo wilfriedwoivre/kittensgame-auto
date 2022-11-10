@@ -7,11 +7,9 @@ export class QoLManager {
     private _host: UserScript;
 
     constructor(
-        host: UserScript,
-        settings = new QoLSettings()
+        host: UserScript
     ) {
         this._host = host;
-        this.settings = settings;
     }
 
     async run() {

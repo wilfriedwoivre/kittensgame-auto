@@ -20,8 +20,14 @@ export class Engine {
         this.qolManager = new QoLManager(this._host);
     }
 
-    stateLoad(settings: EngineState) {
+    static newState(): EngineState {
+        return {
+            qol: new QoLSettings()
+        };
+    }
 
+    stateLoad(settings: EngineState) {
+        this.qolManager.settings = settings.qol;
     }
 
     stateSerialize(): EngineState {
@@ -31,14 +37,14 @@ export class Engine {
     }
 
     start(): void {
-       const loop = () => {
+        const loop = () => {
 
-        this._iterate().then(() => {
-            setTimeout(loop, this._interval);
-        })
-       };
+            this._iterate().then(() => {
+                setTimeout(loop, this._interval);
+            })
+        };
 
-       loop();
+        loop();
     }
 
     private async _iterate(): Promise<void> {

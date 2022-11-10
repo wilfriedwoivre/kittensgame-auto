@@ -18,7 +18,6 @@ export class QoLSettingsUi {
         this._host = host;
         this._settings = settings;
         this.constructElement();
-
     }
 
     public get element(): JQuery<HTMLElement> {
@@ -76,5 +75,7 @@ export class QoLSettingsUi {
         let checkbox = event.target as HTMLInputElement;
         var settingIndex = event.target.id.replace(this.idPrefix, "");
         this._settings.settings[settingIndex].enabled = checkbox.checked;
+
+        this._host.saveEngineState();
     }
 }

@@ -1,8 +1,6 @@
-import JQuery from "jquery";
-
 import { GamePage } from "./types/gamePage";
 
-import { Engine, EngineState } from "./Engine";
+import { Engine, EngineState } from './Engine';
 
 import { UserInterface } from "./ui/UserInterface";
 
@@ -28,7 +26,9 @@ export class UserScript {
      */
     private static _gameStartSignal: Promise<boolean>;
     private static _gameStartSignalResolver: undefined | ((value: boolean) => void);
-    private static _possibleEngineState: EngineState | undefined = undefined;
+
+    private static readonly cookieName = "kam";
+    static _possibleEngineState : EngineState = undefined; 
 
 
     readonly gamePage: GamePage;
@@ -42,19 +42,18 @@ export class UserScript {
         this.gamePage = gamePage;
 
         this.engine = new Engine(this);
+        
+        if (UserScript._possibleEngineState === undefined) {
+            UserScript._loadEngineStateFromCookie();
+        }
+        if (UserScript._possibleEngineState !== undefined) {
+            this.engine.stateLoad(UserScript._possibleEngineState);
+        }
+        
         this._userInterface = new UserInterface(this);
         this._userInterface.construct();
 
     }
-
-    getSettings() {
-        return this.engine.stateSerialize();
-    }
-    setSettings(settings: EngineState) {
-        cinfo("Loading engine state...");
-        this.engine.stateLoad(settings);
-    }
-
 
     run(): void {
         this.printMessage("Update default color");
@@ -74,29 +73,6 @@ export class UserScript {
     }
 
 
-    private static _tryEngineStateFromSaveData(
-        saveData: Record<string, unknown>
-    ): EngineState | undefined {
-        if ("ks" in saveData === false) {
-            cdebug("Failed: `ks` not found in save data.");
-            return;
-        }
-
-        const ksData = saveData.ks as { state?: Array<EngineState> };
-        if ("state" in ksData === false) {
-            cdebug("Failed: `ks.state` not found in save data.");
-            return;
-        }
-
-        const state = ksData.state;
-        if (!Array.isArray(state)) {
-            cdebug("Failed: `ks.state` not `Array`.");
-            return;
-        }
-
-        return state[0];
-    }
-
     static async waitForGame(timeout = 30000): Promise<GamePage> {
         const signals: Array<Promise<unknown>> = [sleep(2000)];
 
@@ -110,24 +86,11 @@ export class UserScript {
                 mustExist(UserScript._gameStartSignalResolver)(true);
             });
 
-            UserScript.window.dojo.subscribe(
-                "server/load",
-                (saveData: { ks?: { state?: Array<EngineState> } }) => {
-                    cinfo(
-                        "EXPERIMENTAL: `server/load` signal caught. Looking for Kitten Scientists engine state in save data..."
-                    );
+            UserScript.window.dojo.subscribe("server/load", () => {
+                console.log("server load, get kam settings");
 
-                    const state = UserScript._tryEngineStateFromSaveData(saveData);
-                    if (!state) {
-                        return;
-                    }
-
-                    cinfo(
-                        "EXPERIMENTAL: Found! Provided save data will be used as seed for next userscript instance."
-                    );
-                    UserScript._possibleEngineState = state;
-                }
-            );
+                this._loadEngineStateFromCookie();
+            })
         }
 
         if (!isNil(UserScript._gameStartSignal)) {
@@ -153,19 +116,6 @@ export class UserScript {
             mustExist(UserScript.window.gamePage),
         );
 
-        // We can already attempt to load the possible engine state and see if this produces errors.
-        // As the startup is orchestrated right now by `index.ts`, if there are legacy options, they
-        // will be loaded into the instance after we return it from here.
-        // Thus, legacy options will overrule modern settings, if they are present.
-        if (!isNil(UserScript._possibleEngineState)) {
-            try {
-                instance.setSettings(UserScript._possibleEngineState);
-            } catch (error) {
-                cerror("The previous engine state could not be processed!", error);
-            }
-        }
-
-        //instance.installSaveManager();
         return instance;
     }
 
@@ -179,5 +129,19 @@ export class UserScript {
         } catch (error) {
             return window;
         }
+    }
+
+    private static _loadEngineStateFromCookie() {
+        if (document.cookie.indexOf(this.cookieName) == -1) {
+            this._possibleEngineState = Engine.newState()
+        }
+        else {
+            var cookieData = decodeURIComponent(document.cookie).split(';')[document.cookie.indexOf(this.cookieName)].split("=")[1];
+            this._possibleEngineState = JSON.parse(cookieData) as EngineState;
+        }
+    }
+
+    saveEngineState() {
+        document.cookie = UserScript.cookieName + "=" + JSON.stringify(this.engine.stateSerialize());
     }
 }
