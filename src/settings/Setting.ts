@@ -1,6 +1,6 @@
 export class Setting {
     enabled: boolean;
-    label: string
+    label: string;
 
     constructor(label: string, enabled = false) {
         this.label = label;
@@ -15,6 +15,7 @@ export class SettingPercentageOption extends Setting {
         super(label, enabled);
         this.percentage = percentage;
     }
+
 }
 
 export interface Settings<TSetting> { 

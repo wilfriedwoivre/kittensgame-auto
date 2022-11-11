@@ -64,12 +64,26 @@ export class UserInterface {
         `);
 
         this._addRule(`
-        #kam .kam-collapsible.active:after
-        { 
-            content: '\\2212';
-            float: right;
-        }
-    `);
+            #kam .kam-collapsible.active:after
+            { 
+                content: '\\2212';
+                float: right;
+            }
+        `);
+
+        this._addRule(`
+            #kam .kam-moreoption
+            { 
+                border: none;
+                background: none;
+                float: right;
+                cursor: help;
+                margin-right: 10px;
+                text-align: center;
+                margin-top: 5px;
+                font-size: larger;
+            }
+        `);
     }
 
     private _addRule(rule: string) {

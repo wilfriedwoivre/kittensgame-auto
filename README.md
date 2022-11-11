@@ -11,10 +11,10 @@ Inspired by amazing work from [Kittens Science](https://github.com/kitten-scienc
 - [UI] Quality Of Life options
 - [Engine] Auto Gathering if you have less than a percentage of your capacity
 - [Global] Implement Save / Load for settings
+- [UI] Add way to update settings for percentage parameter
 
 ## Next Todo (not all the stuff)
 
-- [UI] Add way to update settings for percentage parameter
 - [Engine] Implement Auto Observe event
 - [UI] Add auto construct of building
 - [Engine] Add auto construct of catnip field

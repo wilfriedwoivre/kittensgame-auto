@@ -1,6 +1,8 @@
 import { UserScript } from '../UserScript';
-import { Settings } from '../settings/Setting';
+import { Settings, SettingPercentageOption, Setting } from '../settings/Setting';
 import { QoLItemSettings } from "../settings/QoLSettings";
+import { objectEntries } from '../tools/Entries';
+import { cerror } from '../tools/Log';
 
 export class QoLSettingsUi {
     private _element: JQuery<HTMLElement>;
@@ -38,18 +40,25 @@ export class QoLSettingsUi {
 
         const optionsList = $("<ul />", { style: "display: none" });
 
-        for (var i in this._settings.settings) {
-
+        for (const [name, setting] of objectEntries(this._settings.settings)) {
             const node = $("<li />")
-            const input = $("<input />", { type: "checkbox", id: this.idPrefix + i, checked: this._settings.settings[i].enabled });
+            const input = $("<input />", { type: "checkbox", id: this.idPrefix + name, checked: setting.enabled });
 
             input.on("change", event => this._updateStatus(event));
-
-            const label = $("<label />", { for: this.idPrefix + i });
-            label.text(this._settings.settings[i].label);
-
             node.append(input);
+
+            const label = $("<label />", { for: this.idPrefix + name });
+            label.text(setting.label);
             node.append(label);
+
+            if (setting instanceof SettingPercentageOption) {
+                const moreOption = $("<button />", { class: "kam-moreoption", text: "*" });
+
+                moreOption.on("click", () => this._displayOptionSettings(name));
+                node.append(moreOption);
+            }
+
+           
             optionsList.append(node);
         }
 
@@ -77,5 +86,22 @@ export class QoLSettingsUi {
         this._settings.settings[settingIndex].enabled = checkbox.checked;
 
         this._host.saveEngineState();
+    }
+
+    private _displayOptionSettings(key: string): void {
+        let settings = this._settings.settings[key] as SettingPercentageOption; 
+        let result = window.prompt("Auto Gather percentage of your max capacity.", settings.percentage.toString());
+
+        try {
+            let newValue = Number.parseInt(result);
+            if (newValue >= 0 && newValue <= 100) {
+                settings.percentage = newValue; 
+                this._host.saveEngineState();
+            }
+        }
+        catch {
+            cerror(`Failed to parse value ${result} as valid percentage`);
+        }
+    
     }
 }
