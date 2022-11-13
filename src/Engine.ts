@@ -1,16 +1,19 @@
 import { UserScript } from "./UserScript";
 import { QoLSettings } from './settings/QoLSettings';
 import { QoLManager } from './engine/QoLManager';
-import { time } from "console";
+import { BonfireManager } from './engine/BonfireManager';
+import { BonfireSettings } from './settings/BonfireSettings';
 
 export type EngineState = {
     qol: QoLSettings;
+    bonfire: BonfireSettings;
 };
 
 export class Engine {
 
     readonly _host: UserScript;
     qolManager: QoLManager;
+    bonfireManager: BonfireManager;
 
     private _interval = 50;
 
@@ -18,21 +21,25 @@ export class Engine {
         this._host = host;
 
         this.qolManager = new QoLManager(this._host);
+        this.bonfireManager = new BonfireManager(this._host);
     }
 
     static newState(): EngineState {
         return {
-            qol: new QoLSettings()
+            qol: new QoLSettings(),
+            bonfire: new BonfireSettings()
         };
     }
 
     stateLoad(settings: EngineState) {
         this.qolManager.settings = settings.qol;
+        this.bonfireManager.settings = settings.bonfire;
     }
 
     stateSerialize(): EngineState {
         return {
-            qol: this.qolManager.settings
+            qol: this.qolManager.settings,
+            bonfire: this.bonfireManager.settings
         };
     }
 
@@ -48,7 +55,8 @@ export class Engine {
     }
 
     private async _iterate(): Promise<void> {
-        await this.qolManager.run();
+        this.qolManager.run();
+        this.bonfireManager.run();
     }
 
 }

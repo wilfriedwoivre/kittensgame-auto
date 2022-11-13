@@ -1,17 +1,23 @@
 import { isNil, mustExist } from "../tools/Maybe";
 import { QoLSettingsUi } from "./QoLSettingsUi"
 import { UserScript } from '../UserScript';
+import { BonfireSettingsUi } from './BonfireSettingsUi';
+import { SettingsUi } from "./SettingsUi";
 
 export class UserInterface {
 
-    private _qolUi: QoLSettingsUi;
+    private Uis: Array<SettingsUi>
+
     private _host: UserScript;
 
     constructor(host: UserScript) {
         this._host = host;
         this._addCss();
 
-        this._qolUi = new QoLSettingsUi(this._host, this._host.engine.qolManager.settings);
+        this.Uis = [
+            new QoLSettingsUi(this._host, this._host.engine.qolManager.settings),
+            new BonfireSettingsUi(this._host, this._host.engine.bonfireManager.settings)
+        ]
     }
 
 
@@ -24,7 +30,9 @@ export class UserInterface {
 
         const optionsListElement = $("<ul />");
 
-        optionsListElement.append(this._qolUi.element);
+        this.Uis.forEach(ui => {
+            optionsListElement.append(ui.element);
+        });
 
 
         const right = $("#rightColumn");

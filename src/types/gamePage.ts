@@ -1,5 +1,5 @@
 import { ResourceInfo } from './craft';
-import { Model } from './core';
+import { Button } from './core';
 
 export type GamePage = {
     toggleScheme: (value: string) => void;
@@ -13,11 +13,11 @@ export type GamePage = {
     }
 
     bldTab: {
-        children:[{
-            controller: {
-                buyItem: (model: Model, event: any, callback: any) => void;
-            }
-            model: Model
-        }]
+        children: Button[]
+    }
+
+    calendar: {
+        observeBtn: HTMLDivElement | null;
+        observeHandler: () => void;
     }
 };

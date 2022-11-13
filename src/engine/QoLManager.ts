@@ -1,20 +1,23 @@
 import { QoLSettings } from '../settings/QoLSettings';
 import { UserScript } from '../UserScript';
 import { SettingPercentageOption } from '../settings/Setting';
+import { Manager } from './Manager';
 
-export class QoLManager {
+export class QoLManager extends Manager<QoLSettings> {
     settings: QoLSettings
-    private _host: UserScript;
 
     constructor(
         host: UserScript
     ) {
-        this._host = host;
+        super(host);
     }
 
     async run() {
         if (this.settings.settings["autoGather"].enabled) {
-            await this.autoGather();
+            this.autoGather();
+        }
+        if (this.settings.settings["observe"].enabled) {
+            this.autoOberve();
         }
     }
 
@@ -26,7 +29,13 @@ export class QoLManager {
 
         if (actual < settings.percentage) {
             const gatherBtn = this._host.gamePage.bldTab.children.find(n => n.model.name == "Gather catnip");
-            gatherBtn.controller.buyItem(gatherBtn.model, {}, () => {})
+            this.buy(gatherBtn);
+        }
+    }
+
+    async autoOberve() {
+        if (this._host.gamePage.calendar.observeBtn !== null) {
+            this._host.gamePage.calendar.observeHandler();
         }
     }
 }

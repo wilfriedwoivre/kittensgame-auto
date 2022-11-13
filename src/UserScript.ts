@@ -28,13 +28,17 @@ export class UserScript {
     private static _gameStartSignalResolver: undefined | ((value: boolean) => void);
 
     private static readonly localStorageName = "kam";
-    static _possibleEngineState : EngineState = undefined; 
+    static _possibleEngineState: EngineState = undefined;
 
 
     readonly gamePage: GamePage;
 
     engine: Engine;
-    private _userInterface : UserInterface
+    private _userInterface: UserInterface;
+
+    private _lastMessage: string;
+    private _lastMessageElt: { span: HTMLElement; };
+    private _lastMessageRepeat = 0;
 
     constructor(
         gamePage: GamePage,
@@ -42,14 +46,14 @@ export class UserScript {
         this.gamePage = gamePage;
 
         this.engine = new Engine(this);
-        
+
         if (UserScript._possibleEngineState === undefined) {
             UserScript._loadEngineStateFromCookie();
         }
         if (UserScript._possibleEngineState !== undefined) {
             this.engine.stateLoad(UserScript._possibleEngineState);
         }
-        
+
         this._userInterface = new UserInterface(this);
         this._userInterface.construct();
 
@@ -58,18 +62,28 @@ export class UserScript {
     run(): void {
         this.printMessage("Update default color");
         this.gamePage.toggleScheme("dark");
-        
+
         this.printMessage("Update Max messages");
         this.gamePage.console.maxMessages = 1000;
 
         this.engine.start();
 
-        
+
     }
 
-    private printMessage(msg: string) {
-        var item = this.gamePage.msg(msg, "", "", true);
-        $(item.span).css("color", "#009933");
+    printMessage(msg: string) {
+        if (this._lastMessage !== msg) {
+            this._lastMessageRepeat = 0; 
+
+            var item = this.gamePage.msg(msg, "", "", true);
+            $(item.span).css("color", "#009933");
+
+            this._lastMessageElt = item;
+            this._lastMessage = msg;
+        } else {
+            $(this._lastMessageElt.span).text(`${this._lastMessage} (x${this._lastMessageRepeat})`);
+            this._lastMessageRepeat++;
+        }
     }
 
 
@@ -133,10 +147,11 @@ export class UserScript {
 
     private static _loadEngineStateFromCookie() {
         if (isNil(localStorage.getItem(this.localStorageName))) {
+            console.log("Create a new state");
             this._possibleEngineState = Engine.newState()
         }
         else {
-            
+            console.log("Get state from local storage");
             var state = localStorage.getItem(this.localStorageName);
             this._possibleEngineState = JSON.parse(state) as EngineState;
         }

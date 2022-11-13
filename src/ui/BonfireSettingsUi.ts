@@ -1,25 +1,24 @@
 import { UserScript } from '../UserScript';
-import { Settings, SettingPercentageOption, Setting } from '../settings/Setting';
-import { QoLItemSettings } from "../settings/QoLSettings";
-import { objectEntries } from '../tools/Entries';
+import { Setting, Settings } from '../settings/Setting';
 import { SettingsUi } from './SettingsUi';
+import { BonfireItemSettings } from '../settings/BonfireSettings';
+import { objectEntries } from '../tools/Entries';
 
-export class QoLSettingsUi extends SettingsUi {
-    
+export class BonfireSettingsUi extends SettingsUi {
+    idPrefix = "bonfiresettings-";
+    title = "Bonfire";
 
-    idPrefix = "qolsettings-";
-    title = "Quality of Life";
-
-    _settings: Settings<QoLItemSettings>;
+    _settings: Settings<BonfireItemSettings>
 
     constructor(
         host: UserScript,
-        settings: Settings<QoLItemSettings>
+        settings: Settings<BonfireItemSettings>
     ) {
-        super(host)
+        super(host);
         this._settings = settings;
         this.constructElement();
     }
+
 
     constructElement(): void {
         const panelElement = this.constructPanel()
@@ -35,5 +34,4 @@ export class QoLSettingsUi extends SettingsUi {
 
         this.element = panelElement;
     }
-
 }
