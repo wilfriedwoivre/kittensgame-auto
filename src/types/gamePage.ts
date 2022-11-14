@@ -20,4 +20,9 @@ export type GamePage = {
         observeBtn: HTMLDivElement | null;
         observeHandler: () => void;
     }
+
+    managers: Array<{
+        load: (saveData: Record<string, unknown>) => void;
+        save: (saveData: Record<string, unknown>) => void;
+    }>;
 };

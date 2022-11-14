@@ -60,6 +60,7 @@ export class UserInterface {
                 text-align: left;
                 width: 100%;
                 outline: none;
+                margin: 3px 0px 3px 0px;
             }
         `);
 

@@ -48,7 +48,7 @@ export class UserScript {
         this.engine = new Engine(this);
 
         if (UserScript._possibleEngineState === undefined) {
-            UserScript._loadEngineStateFromCookie();
+            this.engine.stateLoad(Engine.newState());
         }
         if (UserScript._possibleEngineState !== undefined) {
             this.engine.stateLoad(UserScript._possibleEngineState);
@@ -73,7 +73,7 @@ export class UserScript {
 
     printMessage(msg: string) {
         if (this._lastMessage !== msg) {
-            this._lastMessageRepeat = 0; 
+            this._lastMessageRepeat = 0;
 
             var item = this.gamePage.msg(msg, "", "", true);
             $(item.span).css("color", "#009933");
@@ -86,6 +86,62 @@ export class UserScript {
         }
     }
 
+    get saveManager() {
+        return this._saveManager;
+    }
+
+    private _saveManager = {
+        load: (saveData: Record<string, unknown>) => {
+            const state = UserScript._tryEngineStateFromSaveData(saveData);
+            if (!state) {
+                return;
+            }
+        },
+        save: (saveData: Record<string, unknown>) => {
+            saveData.kam = { state: [this.getSettings()] };
+        },
+    };
+
+    installSaveManager() {
+        cinfo("EXPERIMENTAL: Installing save game manager...");
+        this.gamePage.managers.push(this.saveManager);
+    }
+
+    private static _tryEngineStateFromSaveData(
+        saveData: Record<string, unknown>
+    ): EngineState | undefined {
+        if ("kam" in saveData === false) {
+            cdebug("Failed: `kam` not found in save data.");
+            return;
+        }
+
+        const ksData = saveData.kam as { state?: Array<EngineState> };
+        if ("state" in ksData === false) {
+            cdebug("Failed: `kam.state` not found in save data.");
+            return;
+        }
+
+        const state = ksData.state;
+        if (!Array.isArray(state)) {
+            cdebug("Failed: `kam.state` not `Array`.");
+            return;
+        }
+
+        return state[0];
+    }
+
+    getSettings() {
+        return this.engine.stateSerialize();
+    }
+
+    setSettings(settings: EngineState) {
+        cinfo("Loading engine state...");
+        this.engine.stateLoad(settings);
+    }
+
+    saveSettings(): void {
+        this.gamePage.managers
+    }
 
     static async waitForGame(timeout = 30000): Promise<GamePage> {
         const signals: Array<Promise<unknown>> = [sleep(2000)];
@@ -100,10 +156,15 @@ export class UserScript {
                 mustExist(UserScript._gameStartSignalResolver)(true);
             });
 
-            UserScript.window.dojo.subscribe("server/load", () => {
+            UserScript.window.dojo.subscribe("server/load", (saveData: { kam?: { state?: Array<EngineState> } }) => {
                 console.log("server load, get kam settings");
 
-                this._loadEngineStateFromCookie();
+                const state = UserScript._tryEngineStateFromSaveData(saveData);
+                if (!state) {
+                    return;
+                }
+
+                UserScript._possibleEngineState = state;
             })
         }
 
@@ -130,6 +191,16 @@ export class UserScript {
             mustExist(UserScript.window.gamePage),
         );
 
+        if (!isNil(UserScript._possibleEngineState)) {
+            try {
+                instance.setSettings(UserScript._possibleEngineState);
+            } catch (error) {
+                cerror("The previous engine state could not be processed!", error);
+            }
+        }
+
+        instance.installSaveManager();
+
         return instance;
     }
 
@@ -143,21 +214,5 @@ export class UserScript {
         } catch (error) {
             return window;
         }
-    }
-
-    private static _loadEngineStateFromCookie() {
-        if (isNil(localStorage.getItem(this.localStorageName))) {
-            console.log("Create a new state");
-            this._possibleEngineState = Engine.newState()
-        }
-        else {
-            console.log("Get state from local storage");
-            var state = localStorage.getItem(this.localStorageName);
-            this._possibleEngineState = JSON.parse(state) as EngineState;
-        }
-    }
-
-    saveEngineState() {
-        localStorage.setItem(UserScript.localStorageName, JSON.stringify(this.engine.stateSerialize()));
     }
 }

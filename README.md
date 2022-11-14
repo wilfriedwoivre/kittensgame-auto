@@ -12,9 +12,9 @@ Inspired by amazing work from [Kittens Science](https://github.com/kitten-scienc
 - [Engine] Auto Gathering if you have less than a percentage of your capacity
 - [Global] Implement Save / Load for settings
 - [UI] Add way to update settings for percentage parameter
+- [Engine] Implement Auto Observe event
+- [Engine] Add auto construct of catnip field
 
 ## Next Todo (not all the stuff)
 
-- [Engine] Implement Auto Observe event
-- [UI] Add auto construct of building
-- [Engine] Add auto construct of catnip field
+- [UI] 

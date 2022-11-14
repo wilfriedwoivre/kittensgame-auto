@@ -53,7 +53,7 @@ export abstract class SettingsUi {
         label.text(setting.label);
         node.append(label);
 
-        if (setting instanceof SettingPercentageOption) {
+        if (setting.hasOwnProperty("percentage")) {
             const moreOption = $("<button />", { class: "kam-moreoption", text: "*" });
 
             moreOption.on("click", () => this._displayOptionSettings(name));
@@ -86,7 +86,7 @@ export abstract class SettingsUi {
         var settingIndex = event.target.id.replace(this.idPrefix, "");
         this._settings.settings[settingIndex].enabled = checkbox.checked;
 
-        this._host.saveEngineState();
+        this._host.saveSettings();
     }
 
     private _displayOptionSettings(key: string): void {
@@ -97,7 +97,7 @@ export abstract class SettingsUi {
             let newValue = Number.parseInt(result);
             if (newValue >= 0 && newValue <= 100) {
                 settings.percentage = newValue; 
-                this._host.saveEngineState();
+                this._host.saveSettings();
             }
         }
         catch {
