@@ -3,6 +3,8 @@ import { UserScript } from '../UserScript';
 import { cerror } from '../tools/Log';
 import { QoLItemSettings } from '../settings/QoLSettings';
 import { BonfireItemSettings } from '../settings/BonfireSettings';
+import { ResourceItemSettings } from '../settings/ResourceSettings';
+import { ScienceItemSettings } from '../settings/ScienceSettings';
 
 
 export abstract class SettingsUi {
@@ -11,7 +13,7 @@ export abstract class SettingsUi {
 
     abstract idPrefix: string;
     abstract title: string; 
-    abstract _settings: Settings<QoLItemSettings | BonfireItemSettings>;
+    abstract _settings: Settings<QoLItemSettings | BonfireItemSettings | ResourceItemSettings | ScienceItemSettings>;
     
     constructor(
         host: UserScript

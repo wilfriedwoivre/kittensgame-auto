@@ -8,8 +8,9 @@ export class QoLSettings implements Settings<QoLItemSettings>
 
     constructor(
         qolItems: QoLItemSettings = {
-            autoGather: new SettingPercentageOption("Auto Gathering", false, 10),
-            observe: new Setting("Auto Observing", true)
+            autoGather: new SettingPercentageOption("Auto Gathering", true, 90),
+            observe: new Setting("Auto Observing", true),
+            autoHunt: new Setting("Auto Hunt", true)
         }
     ) {
         this.settings = qolItems;

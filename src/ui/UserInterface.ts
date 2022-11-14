@@ -3,6 +3,8 @@ import { QoLSettingsUi } from "./QoLSettingsUi"
 import { UserScript } from '../UserScript';
 import { BonfireSettingsUi } from './BonfireSettingsUi';
 import { SettingsUi } from "./SettingsUi";
+import { ResourceSettingsUi } from './ResourceSettingsUi';
+import { ScienceSettingsUi } from './ScienceSettingsUi';
 
 export class UserInterface {
 
@@ -16,7 +18,9 @@ export class UserInterface {
 
         this.Uis = [
             new QoLSettingsUi(this._host, this._host.engine.qolManager.settings),
-            new BonfireSettingsUi(this._host, this._host.engine.bonfireManager.settings)
+            new BonfireSettingsUi(this._host, this._host.engine.bonfireManager.settings),
+            new ResourceSettingsUi(this._host, this._host.engine.resourceManager.settings),
+            new ScienceSettingsUi(this._host, this._host.engine.scienceManager.settings),
         ]
     }
 
@@ -106,4 +110,6 @@ export class UserInterface {
         const sheet = mustExist(styleSheet.sheet);
         sheet.insertRule(rule);
     }
+
+
 }

@@ -25,4 +25,12 @@ export type GamePage = {
         load: (saveData: Record<string, unknown>) => void;
         save: (saveData: Record<string, unknown>) => void;
     }>;
+
+    libraryTab: {
+        buttons: Button[]
+    }
+
+    village: {
+        huntAll: () => void
+    }
 };

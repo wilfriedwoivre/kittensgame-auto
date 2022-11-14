@@ -215,4 +215,10 @@ export class UserScript {
             return window;
         }
     }
+
+    resetSettings() {
+        var save = JSON.parse(localStorage.getItem("com.nuclearunicorn.kittengame.savedata")); 
+        save.kam.state = []; 
+        localStorage.setItem("com.nuclearunicorn.kittengame.savedata", JSON.stringify(save))
+    }
 }

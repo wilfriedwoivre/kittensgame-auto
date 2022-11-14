@@ -8,7 +8,9 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
 
     constructor(
         bonfireItem: BonfireItemSettings = {
-            field: new Setting("Catnip field", false)
+            field: new Setting("Catnip field", true),
+            library: new Setting("Library", true),
+            barn: new Setting("Barn", true)
         }
     ) {
         this.settings = bonfireItem;

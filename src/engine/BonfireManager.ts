@@ -12,22 +12,27 @@ export class BonfireManager extends Manager<BonfireSettings> {
     }
 
     async run() {
-        if (this.settings.settings["field"].enabled) {
-            await this.buyField();
-        }
+
+        await this.buyBuilding("field");
+        await this.buyBuilding("library");
+        await this.buyBuilding("barn");
     }
 
-    async buyField() {
-        const fieldBtn = this._host.gamePage.bldTab.children.find(n => { if (n.model.metadata !== undefined) { return n.model.metadata.name == "field" }});
+    async buyBuilding(name: string, predicate?: () => boolean) {
+        if (this.settings.settings[name].enabled) {
+            const btn = this._host.gamePage.bldTab.children.find(n => { if (n.model.metadata !== undefined) { return n.model.metadata.name == name } });
 
-        if (fieldBtn !== undefined) {
-            if (fieldBtn.model.enabled && fieldBtn.model.visible) {
-                if (this.canBuy(fieldBtn.model.prices)) {
-                    this.buy(fieldBtn);
+            if (btn !== undefined) {
+                if (btn.model.enabled && btn.model.visible) {
+                    if (this.canBuy(btn.model.prices)) {
+                        this.buy(btn);
+                    }
                 }
             }
         }
     }
 
-    
+
+
+
 }

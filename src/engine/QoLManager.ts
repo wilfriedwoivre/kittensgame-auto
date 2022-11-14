@@ -19,6 +19,9 @@ export class QoLManager extends Manager<QoLSettings> {
         if (this.settings.settings["observe"].enabled) {
             this.autoOberve();
         }
+        if (this.settings.settings["autoHunt"].enabled) {
+            await this.autoHunt();
+        }
     }
 
     async autoGather() {
@@ -37,5 +40,14 @@ export class QoLManager extends Manager<QoLSettings> {
         if (this._host.gamePage.calendar.observeBtn !== null) {
             this._host.gamePage.calendar.observeHandler();
         }
+    }
+
+    async autoHunt() {
+        let catpower = this._host.gamePage.resPool.get("manpower");
+
+        if (catpower.value == catpower.maxValue) {
+            this._host.gamePage.village.huntAll();
+        }
+
     }
 }
