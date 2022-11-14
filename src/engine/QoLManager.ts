@@ -1,6 +1,6 @@
 import { QoLSettings } from '../settings/QoLSettings';
 import { UserScript } from '../UserScript';
-import { SettingPercentageOption } from '../settings/Setting';
+import { SettingPercentageOption, SettingPreviousValue } from '../settings/Setting';
 import { Manager } from './Manager';
 
 export class QoLManager extends Manager<QoLSettings> {
@@ -22,7 +22,11 @@ export class QoLManager extends Manager<QoLSettings> {
         if (this.settings.settings["autoHunt"].enabled) {
             await this.autoHunt();
         }
+        if (this.settings.settings["zebras"].enabled) {
+            await this.autoZebrasIronWill();
+        }
     }
+
 
     async autoGather() {
         const settings = this.settings.settings["autoGather"] as SettingPercentageOption;
@@ -49,5 +53,16 @@ export class QoLManager extends Manager<QoLSettings> {
             this._host.gamePage.village.huntAll();
         }
 
+    }
+
+    async autoZebrasIronWill() {
+        let setting = this.settings.settings["zebras"] as SettingPreviousValue;
+        let actual = this._host.gamePage.resPool.get("zebras")
+        if (actual.maxValue != setting.count) {
+            if (actual.value) {
+                setting.count = actual.maxValue;
+                this._host.gamePage.reset();
+            }
+        }
     }
 }

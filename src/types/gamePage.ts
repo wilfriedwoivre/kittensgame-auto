@@ -33,4 +33,6 @@ export type GamePage = {
     village: {
         huntAll: () => void
     }
+
+    reset: () => void
 };

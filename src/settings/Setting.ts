@@ -18,6 +18,15 @@ export class SettingPercentageOption extends Setting {
 
 }
 
+export class SettingPreviousValue extends Setting {
+    count: number;
+
+    constructor(label: string, enabled = false, count = 0) {
+        super(label, enabled);
+        this.count = count;
+    }
+}
+
 export interface Settings<TSetting> { 
     settings: TSetting
 }
