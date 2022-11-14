@@ -36,5 +36,5 @@ export type GamePage = {
         huntAll: () => void
     }
 
-    reset: () => void
+    resetAutomatic: () => void
 };

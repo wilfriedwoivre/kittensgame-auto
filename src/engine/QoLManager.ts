@@ -61,7 +61,7 @@ export class QoLManager extends Manager<QoLSettings> {
         if (actual.maxValue != setting.count) {
             if (actual.value) {
                 setting.count = actual.maxValue;
-                this._host.gamePage.reset();
+                this._host.gamePage.resetAutomatic();
             }
         }
     }
