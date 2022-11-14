@@ -5,15 +5,21 @@ import { Manager } from './Manager';
 export class ScienceManager extends Manager<ScienceSettings> {
     settings: ScienceSettings
 
-    constructor (
+    constructor(
         host: UserScript
     ) {
         super(host);
     }
 
     async run() {
-        if (this.settings.settings["autoResearch"].enabled) {
-            this.autoResearch();
+        if (this._host.gamePage.libraryTab.visible) {
+            if (this._host.gamePage.libraryTab.buttons.length == 0) {
+                let tabId = this._host.gamePage.libraryTab.tabId;
+                $(`.${tabId}`)[0].click();
+            }
+            if (this.settings.settings["autoResearch"].enabled) {
+                this.autoResearch();
+            }
         }
     }
 
@@ -21,7 +27,7 @@ export class ScienceManager extends Manager<ScienceSettings> {
         var items = this._host.gamePage.libraryTab.buttons.filter(n => n.model.visible && n.model.enabled)
 
         // TODO Maybe find the less expensive
-        var research = items.find(n => this.canBuy(n.model.prices)); 
+        var research = items.find(n => this.canBuy(n.model.prices));
         if (research !== undefined) {
             this.buy(research);
         }

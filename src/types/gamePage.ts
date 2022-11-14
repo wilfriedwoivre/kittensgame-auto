@@ -27,6 +27,8 @@ export type GamePage = {
     }>;
 
     libraryTab: {
+        tabId: string;
+        visible: boolean;
         buttons: Button[]
     }
 
