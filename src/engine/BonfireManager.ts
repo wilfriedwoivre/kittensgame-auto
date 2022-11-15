@@ -12,7 +12,11 @@ export class BonfireManager extends Manager<BonfireSettings> {
     }
 
     async run() {
-
+        if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.bldTab.tabId) 
+        {
+            this._host.gamePage.bldTab.render();
+        }
+        
         await this.buyBuilding("field");
         await this.buyBuilding("library");
         await this.buyBuilding("barn");
@@ -32,8 +36,6 @@ export class BonfireManager extends Manager<BonfireSettings> {
             if (btn !== undefined) {
                 if (btn.model.enabled) {
                     if (this.canBuy(btn.model.prices)) {
-                        let tabId = this._host.gamePage.bldTab.tabId;
-                        $(`.${tabId}`)[0].click();
                         this.buy(btn);
                     }
                 }

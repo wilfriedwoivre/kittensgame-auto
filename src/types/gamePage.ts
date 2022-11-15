@@ -16,7 +16,8 @@ export type GamePage = {
 
     bldTab: {
         tabId: string;
-        children: Button[]
+        children: Button[];
+        render: () => void;
     }
 
     calendar: {
@@ -33,6 +34,7 @@ export type GamePage = {
         tabId: string;
         visible: boolean;
         buttons: Button[]
+        render: () => void;
     }
 
     village: {
@@ -40,4 +42,8 @@ export type GamePage = {
     }
 
     resetAutomatic: () => void
+
+    ui: {
+        activeTabId: string
+    }
 };

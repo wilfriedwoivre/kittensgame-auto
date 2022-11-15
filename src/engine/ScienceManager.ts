@@ -13,6 +13,12 @@ export class ScienceManager extends Manager<ScienceSettings> {
 
     async run() {
         if (this._host.gamePage.libraryTab.visible) {
+
+            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.libraryTab.tabId) 
+            {
+                this._host.gamePage.libraryTab.render();
+            }
+            
             if (this._host.gamePage.libraryTab.buttons.length == 0) {
                 let tabId = this._host.gamePage.libraryTab.tabId;
                 $(`.${tabId}`)[0].click();
@@ -29,8 +35,7 @@ export class ScienceManager extends Manager<ScienceSettings> {
         // TODO Maybe find the less expensive
         var research = items.find(n => this.canBuy(n.model.prices));
         if (research !== undefined) {
-            let tabId = this._host.gamePage.libraryTab.tabId;
-            $(`.${tabId}`)[0].click();
+
             this.buy(research);
         }
     }

@@ -29,4 +29,5 @@ export abstract class Manager<TSetting> {
         this._host.printMessage(`Buy ${btn.model.name}`);
         btn.controller.buyItem(btn.model, {}, () => { });
     }
+
 }
