@@ -42,6 +42,7 @@ export type GamePage = {
     }
 
     resetAutomatic: () => void
+    save: () => void
 
     ui: {
         activeTabId: string
