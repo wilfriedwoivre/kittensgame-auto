@@ -24,7 +24,7 @@ export class ScienceManager extends Manager<ScienceSettings> {
     }
 
     async autoResearch() {
-        var items = this._host.gamePage.libraryTab.buttons.filter(n => n.model.visible && n.model.enabled)
+        var items = this._host.gamePage.libraryTab.buttons.filter(n => n.model.visible)
 
         // TODO Maybe find the less expensive
         var research = items.find(n => this.canBuy(n.model.prices));
