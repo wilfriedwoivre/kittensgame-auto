@@ -29,6 +29,8 @@ export class ScienceManager extends Manager<ScienceSettings> {
         // TODO Maybe find the less expensive
         var research = items.find(n => this.canBuy(n.model.prices));
         if (research !== undefined) {
+            let tabId = this._host.gamePage.libraryTab.tabId;
+            $(`.${tabId}`)[0].click();
             this.buy(research);
         }
     }

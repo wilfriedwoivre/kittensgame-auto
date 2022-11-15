@@ -32,6 +32,8 @@ export class BonfireManager extends Manager<BonfireSettings> {
             if (btn !== undefined) {
                 if (btn.model.enabled && btn.model.visible) {
                     if (this.canBuy(btn.model.prices)) {
+                        let tabId = this._host.gamePage.bldTab.tabId;
+                        $(`.${tabId}`)[0].click();
                         this.buy(btn);
                     }
                 }
