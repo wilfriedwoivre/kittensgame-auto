@@ -8,6 +8,8 @@ export type GamePage = {
     }
     msg: (msg: string, type: string, tag: string, noBullet: boolean) => { span: HTMLElement };
 
+    ironWill: boolean
+    
     resPool: {
         get: (name: string) => ResourceInfo
     }

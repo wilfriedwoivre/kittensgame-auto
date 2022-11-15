@@ -37,6 +37,8 @@ We will make a focus on Iron Will. And i implement the script step by step durin
 - field
 - barn
 - library
+- mine
+- pasture (If Iron Will, we don't buy it by default even if settings checked)
 
 #### Crafting
 
