@@ -42,7 +42,16 @@ export class VillageManager extends Manager<VillageSettings> {
 
             console.log(currentAssign);
 
-            let idealAssign: Record<Job, number>;
+            let idealAssign: Record<Job, number> = {
+                woodcutter: -2,
+                farmer: -2,
+                scholar: -2,
+                hunter: -2,
+                miner: -2,
+                priest: -2,
+                geologist: -2,
+                engineer: -2
+            }
 
             Object.entries(Job).forEach(([key, value]) => {
                 if (!this._host.gamePage.village.getJob(value).unlocked) {
