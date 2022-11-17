@@ -16,12 +16,13 @@ export class BonfireManager extends Manager<BonfireSettings> {
         {
             this._host.gamePage.bldTab.render();
         }
-        
+
         await this.buyBuilding("field");
         await this.buyBuilding("library");
         await this.buyBuilding("barn");
         await this.buyBuilding("pasture", () => { return !this._host.gamePage.ironWill; });
         await this.buyBuilding("mine");
+        await this.buyBuilding("hut", () => { return this._host.gamePage.village.happiness >= 0.80; })
     }
 
     async buyBuilding(name: string, predicate?: () => boolean) {

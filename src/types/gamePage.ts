@@ -38,7 +38,8 @@ export type GamePage = {
     }
 
     village: {
-        huntAll: () => void
+        huntAll: () => void;
+        happiness: number
     }
 
     resetAutomatic: () => void
@@ -47,4 +48,5 @@ export type GamePage = {
     ui: {
         activeTabId: string
     }
+
 };

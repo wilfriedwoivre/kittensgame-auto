@@ -39,6 +39,8 @@ We will make a focus on Iron Will. And i implement the script step by step durin
 - library
 - mine
 - pasture (If Iron Will, we don't buy it by default even if settings checked)
+- hut
+  - Prevent building if happiness is less than 80%
 
 #### Crafting
 

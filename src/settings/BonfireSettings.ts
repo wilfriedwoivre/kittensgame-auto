@@ -12,7 +12,8 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
             library: new Setting("Library", true),
             barn: new Setting("Barn", true),
             pasture: new Setting("Pasture", true),
-            mine: new Setting("Mine", true)
+            mine: new Setting("Mine", true),
+            hut: new Setting("Hut", false)
         }
     ) {
         this.settings = bonfireItem;
