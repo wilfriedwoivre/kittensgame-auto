@@ -47,9 +47,9 @@ export class VillageManager extends Manager<VillageSettings> {
 
             Object.keys(Job).forEach((job) => {
                 if (!this._host.gamePage.village.getJob(job).unlocked) {
-                    idealAssign[job] = 0;
+                    idealAssign[job as Job] = 0;
                 } else {
-                    idealAssign[job] = -1;
+                    idealAssign[job as Job] = -1;
                 }
                 switch (job) {
                     case Job.Woodcutter:
@@ -73,8 +73,6 @@ export class VillageManager extends Manager<VillageSettings> {
                 }
             });
 
-            
-            // @ts-expect-error
             console.log(idealAssign);
         }
     }
