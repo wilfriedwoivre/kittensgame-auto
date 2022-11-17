@@ -7,7 +7,7 @@ export class VillageSettings implements Settings<VillageItemSettings> {
 
     constructor(
         villageItems: VillageItemSettings = {
-            autoManageJob: new Setting("Manage Jobs", true)
+            autoManageJobs: new Setting("Manage Jobs", true)
         }
     ) {
         this.settings = villageItems;
