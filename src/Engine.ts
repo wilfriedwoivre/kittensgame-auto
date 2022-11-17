@@ -6,13 +6,16 @@ import { BonfireSettings } from './settings/BonfireSettings';
 import { ResourceSettings } from './settings/ResourceSettings';
 import { ResourceManager } from './engine/ResourceManager';
 import { ScienceManager } from './engine/ScienceManager';
+import { VillageManager } from "./engine/VillageManager";
 import { ScienceSettings } from './settings/ScienceSettings';
+import { VillageSettings } from './settings/VillageSettings';
 
 export type EngineState = {
     qol: QoLSettings;
     bonfire: BonfireSettings;
     resources: ResourceSettings;
     science: ScienceSettings;
+    village: VillageSettings;
 };
 
 export class Engine {
@@ -22,6 +25,7 @@ export class Engine {
     bonfireManager: BonfireManager;
     resourceManager: ResourceManager;
     scienceManager: ScienceManager;
+    villageManager: VillageManager;
 
     private _interval = 50;
 
@@ -40,7 +44,8 @@ export class Engine {
             qol: new QoLSettings(),
             bonfire: new BonfireSettings(),
             resources: new ResourceSettings(),
-            science: new ScienceSettings()
+            science: new ScienceSettings(),
+            village: new VillageSettings()
         };
     }
 
@@ -49,6 +54,7 @@ export class Engine {
         this.bonfireManager.settings = settings.bonfire ?? new BonfireSettings();
         this.resourceManager.settings = settings.resources ?? new ResourceSettings();
         this.scienceManager.settings = settings.science ?? new ScienceSettings();
+        this.villageManager.settings = settings.village ?? new VillageSettings();
     }
 
     stateSerialize(): EngineState {
@@ -56,7 +62,8 @@ export class Engine {
             qol: this.qolManager.settings,
             bonfire: this.bonfireManager.settings,
             resources: this.resourceManager.settings,
-            science: this.scienceManager.settings
+            science: this.scienceManager.settings,
+            village: this.villageManager.settings,
         };
     }
 
@@ -76,6 +83,7 @@ export class Engine {
         this.bonfireManager.run();
         this.resourceManager.run();
         this.scienceManager.run();
+        this.villageManager.run();
     }
 
 }
