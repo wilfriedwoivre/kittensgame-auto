@@ -44,14 +44,13 @@ export class VillageManager extends Manager<VillageSettings> {
 
             let idealAssign: Record<Job, number>;
 
-            Object.keys(Job).forEach((job) => {
-                let jobItem = (job as Job);
-                if (!this._host.gamePage.village.getJob(jobItem.toString()).unlocked) {
-                    idealAssign[job as Job] = 0;
+            Object.entries(Job).forEach(([key, value]) => {
+                if (!this._host.gamePage.village.getJob(value).unlocked) {
+                    idealAssign[value] = 0;
                 } else {
-                    idealAssign[job as Job] = -1;
+                    idealAssign[value] = -1;
                 }
-                switch (job) {
+                switch (value) {
                     case Job.Woodcutter:
                         break;
                     case Job.Farmer:
