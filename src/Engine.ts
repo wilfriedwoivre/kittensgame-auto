@@ -36,6 +36,7 @@ export class Engine {
         this.bonfireManager = new BonfireManager(this._host);
         this.resourceManager = new ResourceManager(this._host);
         this.scienceManager = new ScienceManager(this._host);
+        this.villageManager = new VillageManager(this._host);
     }
 
 
