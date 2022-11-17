@@ -46,7 +46,7 @@ export class VillageManager extends Manager<VillageSettings> {
 
             Object.keys(Job).forEach((job) => {
                 let jobItem = (job as Job);
-                if (!this._host.gamePage.village.getJob(jobItem).unlocked) {
+                if (!this._host.gamePage.village.getJob(jobItem.toString()).unlocked) {
                     idealAssign[job as Job] = 0;
                 } else {
                     idealAssign[job as Job] = -1;
