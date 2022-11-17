@@ -6,9 +6,9 @@ import { BonfireSettings } from './settings/BonfireSettings';
 import { ResourceSettings } from './settings/ResourceSettings';
 import { ResourceManager } from './engine/ResourceManager';
 import { ScienceManager } from './engine/ScienceManager';
-import { VillageManager } from "./engine/VillageManager";
 import { ScienceSettings } from './settings/ScienceSettings';
 import { VillageSettings } from './settings/VillageSettings';
+import { VillageManager } from './engine/VillageManager';
 
 export type EngineState = {
     qol: QoLSettings;
