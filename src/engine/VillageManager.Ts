@@ -12,7 +12,6 @@ enum Job {
     Geologist = "geologist",
     Engineer = "engineer"
 }
-
 export class VillageManager extends Manager<VillageSettings> {
     settings: VillageSettings;
 
