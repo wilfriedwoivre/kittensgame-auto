@@ -19,3 +19,17 @@ export type Price = {
     name: string;
     val: number;
 }
+
+
+export type Kitten = {
+    name: string;
+    surname: string;
+    age: number;
+    exp: number;
+    job: string;
+}
+
+export type Job = {
+    name: string;
+    unlocked: boolean;
+}

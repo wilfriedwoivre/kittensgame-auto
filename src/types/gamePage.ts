@@ -1,5 +1,5 @@
 import { ResourceInfo } from './craft';
-import { Button } from './core';
+import { Button, Kitten, Job } from './core';
 
 export type GamePage = {
     toggleScheme: (value: string) => void;
@@ -39,7 +39,14 @@ export type GamePage = {
 
     village: {
         huntAll: () => void;
-        happiness: number
+        happiness: number;
+        canHaveLeaderOrPromote: () => boolean;
+        sim: {
+            kittens: Kitten[]
+        }
+        getJob(name: string): Job
+        assignJob(job: Job, amount: number): void;
+        unassignJob(Kitten: Kitten): void;
     }
 
     resetAutomatic: () => void

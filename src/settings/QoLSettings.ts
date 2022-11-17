@@ -11,7 +11,7 @@ export class QoLSettings implements Settings<QoLItemSettings>
             autoGather: new SettingPercentageOption("Auto Gathering", true, 90),
             observe: new Setting("Auto Observing", true),
             autoHunt: new Setting("Auto Hunt", true),
-            zebras: new SettingPreviousValue("Zebra", false, 3)
+            zebras: new SettingPreviousValue("Zebra", false, 0)
         }
     ) {
         this.settings = qolItems;
