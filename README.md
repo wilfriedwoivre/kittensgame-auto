@@ -30,6 +30,10 @@ We will make a focus on Iron Will. And i implement the script step by step durin
 - Auto Research
 - Automatic Zebras (for Iron Will), uncheck the settings to deactivate automatic reset
 
+### Automatic Village
+
+- Auto manage kittens assignment
+
 ### Supporting items
 
 #### Bonfire
@@ -41,12 +45,21 @@ We will make a focus on Iron Will. And i implement the script step by step durin
 - pasture (If Iron Will, we don't buy it by default even if settings checked)
 - hut
   - Prevent building if happiness is less than 80%
+- workshop
+- academy
+- unicorn pasture
+- aqueduct
+- smelter with max option
 
 #### Crafting
 
 - wood (from refine catnip button)
 
 #### Science
+
+- All
+
+#### Workshop
 
 - All
 

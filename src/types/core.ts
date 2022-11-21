@@ -11,7 +11,10 @@ export type Model = {
     name: string;
     visible: boolean;
     metadata: {
+        val: number;
         name: string;
+        researched: true;
+        unlocked: true;
     }
 }
 

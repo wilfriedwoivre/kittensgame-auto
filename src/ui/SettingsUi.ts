@@ -1,4 +1,4 @@
-import { SettingPercentageOption, Settings, Setting } from '../settings/Setting';
+import { SettingPercentageOption, Settings, Setting, SettingMaxValue } from '../settings/Setting';
 import { UserScript } from '../UserScript';
 import { cerror } from '../tools/Log';
 import { QoLItemSettings } from '../settings/QoLSettings';
@@ -59,7 +59,14 @@ export abstract class SettingsUi {
         if (setting.hasOwnProperty("percentage")) {
             const moreOption = $("<button />", { class: "kam-moreoption", text: "*" });
 
-            moreOption.on("click", () => this._displayOptionSettings(name));
+            moreOption.on("click", () => this._displayOptionPercentageSettings(name));
+            node.append(moreOption);
+        }
+
+        if (setting.hasOwnProperty("max")) {
+            const moreOption = $("<button />", { class: "kam-moreoption", text: "*" });
+
+            moreOption.on("click", () => this._displayOptionMaxSettings(name));
             node.append(moreOption);
         }
 
@@ -92,7 +99,7 @@ export abstract class SettingsUi {
         this._host.saveSettings();
     }
 
-    private _displayOptionSettings(key: string): void {
+    private _displayOptionPercentageSettings(key: string): void {
         let settings = this._settings.settings[key] as SettingPercentageOption; 
         let result = window.prompt(`${settings.label} percentage of your max capacity.`, settings.percentage.toString());
 
@@ -105,6 +112,23 @@ export abstract class SettingsUi {
         }
         catch {
             cerror(`Failed to parse value ${result} as valid percentage`);
+        }
+    
+    }
+
+    private _displayOptionMaxSettings(key: string): void {
+        let settings = this._settings.settings[key] as SettingMaxValue; 
+        let result = window.prompt(`${settings.label} max item count.`, settings.max.toString());
+
+        try {
+            let newValue = Number.parseInt(result);
+            if (newValue >= 0 && newValue <= 100) {
+                settings.max = newValue; 
+                this._host.saveSettings();
+            }
+        }
+        catch {
+            cerror(`Failed to parse value ${result} as valid number`);
         }
     
     }

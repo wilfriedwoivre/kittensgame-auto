@@ -1,5 +1,5 @@
 import { ResourceInfo } from './craft';
-import { Button, Kitten, Job } from './core';
+import { Button, Kitten, Job, Model } from './core';
 
 export type GamePage = {
     toggleScheme: (value: string) => void;
@@ -12,6 +12,13 @@ export type GamePage = {
 
     resPool: {
         get: (name: string) => ResourceInfo
+    }
+    
+    bld: {
+        meta: [{
+            name: string;
+            val: number;
+        }]
     }
 
     bldTab: {
@@ -37,6 +44,13 @@ export type GamePage = {
         render: () => void;
     }
 
+    workshopTab: {
+        tabId: string;
+        visible: boolean;
+        buttons: Button[]
+        render: () => void;
+    }
+
     village: {
         huntAll: () => void;
         happiness: number;
@@ -47,6 +61,33 @@ export type GamePage = {
         getJob(name: string): Job
         assignJob(job: Job, amount: number): void;
         unassignJob(Kitten: Kitten): void;
+        getResProduction: () => {
+            catnip: number
+            science: number
+            wood: number
+        }
+    }
+
+    villageTab:  {
+        tabId: string;
+        visible: boolean;
+        buttons: {
+            assignLinks: {
+                assign: HTMLLinkElement
+            }
+            unassignLinks: {
+                unassign: HTMLLinkElement
+            }
+            opts: {
+                job: string
+            }
+            controller: {
+                assignJobs: (model: Model, amt: number) => void;
+                unassignJobs: (model: Model, amt: number) => void;
+            }
+            model: Model
+        }[]
+        render: () => void;
     }
 
     resetAutomatic: () => void
@@ -54,6 +95,11 @@ export type GamePage = {
 
     ui: {
         activeTabId: string
+        render: () => void
     }
+
+    getResourcePerTick: (resName: string, withConversion: boolean) => number;
+    ticksPerSecond: number;
+
 
 };

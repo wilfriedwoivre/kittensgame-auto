@@ -6,4 +6,5 @@ export type ResourceInfo = {
     maxValue: number;
     value: number;
     unlocked: boolean;
+    perTickCached: number;
 }

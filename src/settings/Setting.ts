@@ -27,6 +27,15 @@ export class SettingPreviousValue extends Setting {
     }
 }
 
+export class SettingMaxValue extends Setting {
+    max: number;
+
+    constructor(label: string, enabled = false, max = 0) {
+        super(label, enabled);
+        this.max = max;
+    }
+}
+
 export interface Settings<TSetting> { 
     settings: TSetting
 }
