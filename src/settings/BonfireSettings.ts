@@ -8,17 +8,28 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
 
     constructor(
         bonfireItem: BonfireItemSettings = {
-            field: new Setting("Catnip field", true),
-            library: new Setting("Library", true),
-            barn: new Setting("Barn", true),
-            pasture: new Setting("Pasture", true),
-            mine: new Setting("Mine", true),
-            hut: new Setting("Hut", true),
             workshop: new Setting("Workshop", true),
-            academy: new Setting("Academy", true),
-            unicornPasture: new Setting("Unicorn Pasture", true),
+
+            field: new Setting("Catnip field", true),
+            pasture: new Setting("Pasture", true),
             aqueduct: new Setting("Aqueduct", true),
-            smelter: new SettingMaxValue("Smelter", true, 1)
+            unicornPasture: new Setting("Unicorn Pasture", true),
+
+            mine: new Setting("Mine", true),
+            lumberMill: new Setting("Lumber Mill", true),
+
+            library: new Setting("Library", true),
+            academy: new Setting("Academy", true),
+
+            smelter: new SettingMaxValue("Smelter", true, 1),
+            tradepost: new Setting("Tradepost", true),
+            
+            
+            hut: new Setting("Hut", true),
+            logHouse: new Setting("Log House", true),
+                        
+            barn: new Setting("Barn", true),
+            
         }
     ) {
         this.settings = bonfireItem;

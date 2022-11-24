@@ -13,6 +13,8 @@ export class QoLManager extends Manager<QoLSettings> {
     }
 
     async run() {
+        this._host.gamePage.bldTab.render();
+
         if (this.settings.settings["autoGather"].enabled) {
             this.autoGather();
         }
@@ -25,6 +27,67 @@ export class QoLManager extends Manager<QoLSettings> {
         if (this.settings.settings["zebras"].enabled) {
             await this.autoZebrasIronWill();
         }
+        if (this.settings.settings["autoStartStopSmelter"].enabled) {
+            await this.autoStartStopSmelters();
+        }
+    }
+
+
+    async autoStartStopSmelters() {
+        var smelter = this._host.gamePage.bldTab.children.find(n => { if (n.model.metadata !== undefined) { return n.model.metadata.name == "smelter" } });
+
+        if (smelter.model.metadata.val > 0) {
+            
+            var coal = this._host.gamePage.resPool.get("coal");
+            var gold = this._host.gamePage.resPool.get("gold");
+            var iron = this._host.gamePage.resPool.get("iron");
+            var titanium = this._host.gamePage.resPool.get("titanium");
+
+            if (smelter.model.metadata.on > 0) {
+                // Auto stop if all ressources are max
+                var stop = true;
+
+                if (smelter.model.metadata.effects.coalPerTickAutoprod > 0) {
+                    stop = stop && coal.value == coal.maxValue;
+                }
+                if (smelter.model.metadata.effects.goldPerTickAutoprod > 0) {
+                    stop = stop && gold.value == gold.maxValue;
+                }
+                if (smelter.model.metadata.effects.ironPerTickAutoprod > 0) {
+                    stop = stop && iron.value == iron.maxValue;
+                }
+                if (smelter.model.metadata.effects.titaniumPerTickAutoprod > 0) {
+                    stop = stop && titanium.value == titanium.maxValue;
+                }
+                
+                if (stop) {
+                    smelter.remove.offAll.link.click();
+                }
+            } else {
+                if (smelter.model.metadata.on == 0) {
+                    // Auto start if all ressources are max
+                    var start = false;
+    
+                    if (smelter.model.metadata.effects.coalPerTickAutoprod > 0) {
+                        start = start || coal.value < coal.maxValue * 0.10;
+                    }
+                    if (smelter.model.metadata.effects.goldPerTickAutoprod > 0) {
+                        start = start || gold.value < gold.maxValue * 0.10;
+                    }
+                    if (smelter.model.metadata.effects.ironPerTickAutoprod > 0) {
+                        start = start || iron.value < iron.maxValue * 0.10;
+                    }
+                    if (smelter.model.metadata.effects.titaniumPerTickAutoprod > 0) {
+                        start = start || titanium.value < titanium.maxValue * 0.10;
+                    }
+                    
+                    if (stop) {
+                        smelter.remove.offAll.link.click();
+                    }
+                }
+            }
+        }
+
     }
 
 
