@@ -30,17 +30,22 @@ export class BonfireManager extends Manager<BonfireSettings> {
 
         await this.buyBuilding("library");
         await this.buyBuilding("academy");
+        await this.buyBuilding("observatory");
 
         await this.buyBuilding("smelter", () => {
             return !this.reachMaxBuildingLimit("smelter");
         })
         await this.buyBuilding("tradepost");
 
+        await this.buyBuilding("temple");
+        await this.buyBuilding("amphitheatre");
+
         await this.buyBuilding("hut", () => { return this._host.gamePage.village.happiness >= 0.80; })
         await this.buyBuilding("logHouse", () => { return this._host.gamePage.village.happiness >= 0.80; })
         
 
         await this.buyBuilding("barn");
+        await this.buyBuilding("warehouse");
 
     }
     

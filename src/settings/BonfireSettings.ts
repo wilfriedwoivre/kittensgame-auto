@@ -20,15 +20,19 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
 
             library: new Setting("Library", true),
             academy: new Setting("Academy", true),
+            observatory: new Setting("Observatory", true),
 
             smelter: new SettingMaxValue("Smelter", true, 1),
             tradepost: new Setting("Tradepost", true),
+            temple: new Setting("Temple", true),
             
+            amphitheatre: new Setting("Amphitheatre", true),
             
             hut: new Setting("Hut", true),
             logHouse: new Setting("Log House", true),
                         
             barn: new Setting("Barn", true),
+            warehouse: new Setting("Warehouse", true),
             
         }
     ) {

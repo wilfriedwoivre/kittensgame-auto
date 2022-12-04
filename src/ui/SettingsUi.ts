@@ -6,6 +6,8 @@ import { BonfireItemSettings } from '../settings/BonfireSettings';
 import { ResourceItemSettings } from '../settings/ResourceSettings';
 import { ScienceItemSettings } from '../settings/ScienceSettings';
 import { VillageItemSettings } from '../settings/VillageSettings';
+import { TradeItemSettings } from '../settings/TradeSettings';
+import { ReligionItemSettings } from '../settings/ReligionSettings';
 
 
 export abstract class SettingsUi {
@@ -14,7 +16,7 @@ export abstract class SettingsUi {
 
     abstract idPrefix: string;
     abstract title: string; 
-    abstract _settings: Settings<QoLItemSettings | BonfireItemSettings | ResourceItemSettings | ScienceItemSettings | VillageItemSettings>;
+    abstract _settings: Settings<QoLItemSettings | BonfireItemSettings | ResourceItemSettings | ScienceItemSettings | VillageItemSettings | TradeItemSettings | ReligionItemSettings>;
     
     constructor(
         host: UserScript

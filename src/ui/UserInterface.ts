@@ -6,6 +6,8 @@ import { SettingsUi } from "./SettingsUi";
 import { ResourceSettingsUi } from './ResourceSettingsUi';
 import { ScienceSettingsUi } from './ScienceSettingsUi';
 import { VillageSettingsUi } from './VillageSettingsUi';
+import { TradeSettingsUi } from './TradeSettingsUi';
+import { ReligionSettingsUi } from './ReligionSettingsUi';
 
 export class UserInterface {
 
@@ -22,7 +24,9 @@ export class UserInterface {
             new BonfireSettingsUi(this._host, this._host.engine.bonfireManager.settings),
             new ResourceSettingsUi(this._host, this._host.engine.resourceManager.settings),
             new ScienceSettingsUi(this._host, this._host.engine.scienceManager.settings),
-            new VillageSettingsUi(this._host, this._host.engine.villageManager.settings)
+            new VillageSettingsUi(this._host, this._host.engine.villageManager.settings),
+            new TradeSettingsUi(this._host, this._host.engine.tradeManager.settings),
+            new ReligionSettingsUi(this._host, this._host.engine.religionManager.settings)
         ]
     }
 

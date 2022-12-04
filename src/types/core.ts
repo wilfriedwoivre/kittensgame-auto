@@ -24,14 +24,19 @@ export type Model = {
         on: number;
         val: number;
         name: string;
-        researched: true;
-        unlocked: true;
+        researched: boolean;
+        unlocked: boolean;
         effects: {
             coalPerTickAutoprod: number;
             goldPerTickAutoprod: number;
             ironPerTickAutoprod: number;
             titaniumPerTickAutoprod: number;
         }
+    }
+    craft: {
+        name: string;
+        prices: Price[];
+        unlocked: boolean;
     }
 }
 

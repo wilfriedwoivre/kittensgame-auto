@@ -14,11 +14,10 @@ export class ScienceManager extends Manager<ScienceSettings> {
     async run() {
         if (this._host.gamePage.libraryTab.visible) {
 
-            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.libraryTab.tabId) 
-            {
+            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.libraryTab.tabId) {
                 this._host.gamePage.libraryTab.render();
             }
-            
+
             if (this._host.gamePage.libraryTab.buttons.length == 0) {
                 let tabId = this._host.gamePage.libraryTab.tabId;
                 $(`.${tabId}`)[0].click();
@@ -26,15 +25,17 @@ export class ScienceManager extends Manager<ScienceSettings> {
             if (this.settings.settings["autoResearch"].enabled) {
                 this.autoResearch();
             }
+            if (this.settings.settings["autoPolicies"].enabled) {
+                this.autoPolicy();
+            }
         }
 
         if (this._host.gamePage.workshopTab.visible) {
 
-            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.workshopTab.tabId) 
-            {
+            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.workshopTab.tabId) {
                 this._host.gamePage.workshopTab.render();
             }
-            
+
             if (this._host.gamePage.workshopTab.buttons.length == 0) {
                 let tabId = this._host.gamePage.workshopTab.tabId;
                 $(`.${tabId}`)[0].click();
@@ -43,7 +44,7 @@ export class ScienceManager extends Manager<ScienceSettings> {
                 this.autoWorkshop();
             }
         }
-        
+
     }
 
     async autoResearch() {
@@ -66,5 +67,37 @@ export class ScienceManager extends Manager<ScienceSettings> {
 
             this.buy(research);
         }
+    }
+
+    async autoPolicy() {
+        // based on https://wiki.kittensgame.com/en/guides-and-advice-and-stuff/monstrous-advice
+        const policyToBuy = [
+            "clearCutting",
+            "tradition",
+            "monarchy",
+            "diplomacy",
+            "epicurianism",
+            "mysticism",
+            "extravagance",
+            "rationing",
+            "culturalExchange",
+            "bigStickPolicy",
+            "zebraRelationsAppeasement",
+            "fullIndustrialization",
+            "openWoodlands",
+            "communism",
+            "militarizeSpace",
+            "expansionism",
+            "necrocracy"
+
+        ]
+
+        var availablePolicy = this._host.gamePage.libraryTab.policyPanel.children.filter(n => policyToBuy.includes(n.model.metadata.name) && n.model.metadata.researched == false && n.model.metadata.unlocked)
+
+        availablePolicy.forEach(item => {
+            if (this.canBuy(item.model.prices)) {
+                this.buy(item);
+            }
+        })
     }
 }

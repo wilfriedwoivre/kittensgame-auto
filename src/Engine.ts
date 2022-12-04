@@ -9,6 +9,10 @@ import { ScienceManager } from './engine/ScienceManager';
 import { ScienceSettings } from './settings/ScienceSettings';
 import { VillageSettings } from './settings/VillageSettings';
 import { VillageManager } from './engine/VillageManager';
+import { TradeSettings } from './settings/TradeSettings';
+import { TradeManager } from './engine/TradeManager';
+import { ReligionSettings } from './settings/ReligionSettings';
+import { ReligionManager } from './engine/ReligionManager';
 
 export type EngineState = {
     qol: QoLSettings;
@@ -16,6 +20,8 @@ export type EngineState = {
     resources: ResourceSettings;
     science: ScienceSettings;
     village: VillageSettings;
+    trade: TradeSettings;
+    religion: ReligionSettings;
 };
 
 export class Engine {
@@ -26,6 +32,8 @@ export class Engine {
     resourceManager: ResourceManager;
     scienceManager: ScienceManager;
     villageManager: VillageManager;
+    tradeManager: TradeManager;
+    religionManager: ReligionManager;
 
     private _interval = 50;
 
@@ -37,6 +45,8 @@ export class Engine {
         this.resourceManager = new ResourceManager(this._host);
         this.scienceManager = new ScienceManager(this._host);
         this.villageManager = new VillageManager(this._host);
+        this.tradeManager = new TradeManager(this._host);
+        this.religionManager = new ReligionManager(this._host);
     }
 
 
@@ -46,7 +56,9 @@ export class Engine {
             bonfire: new BonfireSettings(),
             resources: new ResourceSettings(),
             science: new ScienceSettings(),
-            village: new VillageSettings()
+            village: new VillageSettings(),
+            trade: new TradeSettings(),
+            religion: new ReligionSettings(),
         };
     }
 
@@ -56,6 +68,8 @@ export class Engine {
         this.resourceManager.settings = settings.resources ?? new ResourceSettings();
         this.scienceManager.settings = settings.science ?? new ScienceSettings();
         this.villageManager.settings = settings.village ?? new VillageSettings();
+        this.tradeManager.settings = settings.trade ?? new TradeSettings();
+        this.religionManager.settings = settings.religion ?? new ReligionSettings();
     }
 
     stateSerialize(): EngineState {
@@ -65,6 +79,8 @@ export class Engine {
             resources: this.resourceManager.settings,
             science: this.scienceManager.settings,
             village: this.villageManager.settings,
+            trade: this.tradeManager.settings,
+            religion: this.religionManager.settings,
         };
     }
 
@@ -85,6 +101,8 @@ export class Engine {
         this.resourceManager.run();
         this.scienceManager.run();
         this.villageManager.run();
+        this.tradeManager.run();
+        this.religionManager.run();
     }
 
 }

@@ -8,7 +8,8 @@ export class ScienceSettings implements Settings<ScienceItemSettings> {
     constructor(
         science: ScienceItemSettings = {
             autoResearch: new Setting("Auto Research science", true),
-            autoWorkshop: new Setting("Auto Research workshop", true)
+            autoWorkshop: new Setting("Auto Research workshop", true),
+            autoPolicies: new Setting("Auto Research policies", true)
         }) {
         this.settings = science;
     }

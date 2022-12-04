@@ -1,5 +1,5 @@
 import { ResourceInfo } from './craft';
-import { Button, Kitten, Job, Model } from './core';
+import { Button, Kitten, Job, Model, Price } from './core';
 
 export type GamePage = {
     toggleScheme: (value: string) => void;
@@ -13,7 +13,7 @@ export type GamePage = {
     resPool: {
         get: (name: string) => ResourceInfo
     }
-    
+
     bld: {
         meta: [{
             name: string;
@@ -27,9 +27,34 @@ export type GamePage = {
         render: () => void;
     }
 
+    diplomacy: {
+        races: {
+            name: string;
+            unlocked: true;
+            hidden: true;
+        }[]
+        getManpowerCost: () => number;
+        getGoldCost: () => number;
+    }
+    diplomacyTab: {
+        tabId: string;
+        visible: boolean;
+        render: () => void;
+        exploreBtn: Button;
+        racePanels: {
+            embassyButton: Button;
+            race: {
+                name: string;
+                embassyPrices: Price
+            };
+            tradeBtn: Button
+        }[]
+    }
+
     calendar: {
         observeBtn: HTMLDivElement | null;
         observeHandler: () => void;
+        getCurSeasonTitle: () => string;
     }
 
     managers: Array<{
@@ -42,6 +67,9 @@ export type GamePage = {
         visible: boolean;
         buttons: Button[]
         render: () => void;
+        policyPanel: {
+            children: Button[]
+        }
     }
 
     workshopTab: {
@@ -49,6 +77,15 @@ export type GamePage = {
         visible: boolean;
         buttons: Button[]
         render: () => void;
+        craftBtns: Button[];
+    }
+
+    religionTab: {
+        tabId: string;
+        children: Button[];
+        visible: boolean;
+        render: () => void;
+        praiseBtn: Button;
     }
 
     village: {
@@ -68,7 +105,7 @@ export type GamePage = {
         }
     }
 
-    villageTab:  {
+    villageTab: {
         tabId: string;
         visible: boolean;
         buttons: {

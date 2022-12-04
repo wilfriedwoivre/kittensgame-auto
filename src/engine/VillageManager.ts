@@ -100,7 +100,7 @@ export class VillageManager extends Manager<VillageSettings> {
                                     if (catnip.perTickCached < 0) {
                                         idealAssign[value] = currentAssign[value] + 1;
                                     } else {
-                                        idealAssign[value] = currentAssign[value] + 1;
+                                        idealAssign[value] = currentAssign[value];
                                     }
                                     remainingJobs = remainingJobs - 1;
                                 }

@@ -2,6 +2,7 @@ import { ResourceSettings } from '../settings/ResourceSettings';
 import { Manager } from './Manager';
 import { UserScript } from '../UserScript';
 import { SettingPercentageOption } from '../settings/Setting';
+import { Price } from '../types/core';
 
 export class ResourceManager extends Manager<ResourceSettings> {
     settings: ResourceSettings;
@@ -15,6 +16,51 @@ export class ResourceManager extends Manager<ResourceSettings> {
     async run() {
         if (this.settings.settings["wood"].enabled) {
             this.craftWood();
+        }
+
+        if (this._host.gamePage.workshopTab.visible) {
+
+            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.workshopTab.tabId) {
+                this._host.gamePage.workshopTab.render();
+            }
+
+            if (this._host.gamePage.workshopTab.buttons.length == 0) {
+                let tabId = this._host.gamePage.workshopTab.tabId;
+                $(`.${tabId}`)[0].click();
+            }
+
+            await this.craftResource("beam", ["wood"]);
+            await this.craftResource("slab", ["minerals"]);
+            await this.craftResource("steel", ["coal"], () => {
+                let iron = this._host.gamePage.resPool.get("iron");
+                return iron.value > (0.8 * iron.maxValue)
+            });
+            await this.craftResource("gear", ["steel"], () => {
+                let steel = this._host.gamePage.resPool.get("steel");
+                let gear = this._host.gamePage.resPool.get("gear");
+                return steel.value > this.findMaxResourceNeeded("steel") && gear.value < this.findMaxResourceNeeded("gear")
+            });
+            await this.craftResource("plate", ["iron"]);
+            await this.craftResource("parchment", ["furs"], () => {
+                return this._host.gamePage.resPool.get("furs").value > Math.max(100000, this.findMaxResourceNeeded("furs"));
+            });
+            await this.craftResource("manuscript", ["culture", "parchment"], () => {
+                let manuscript = this._host.gamePage.resPool.get("manuscript");
+                let parchment = this._host.gamePage.resPool.get("parchment");
+
+                return parchment.value > this.findMaxResourceNeeded("parchment") && manuscript.value < this.findMaxResourceNeeded("manuscript");
+            });
+            await this.craftResource("compedium", ["science", "manuscript"], () => {
+                let manuscript = this._host.gamePage.resPool.get("manuscript");
+                let compedium = this._host.gamePage.resPool.get("compedium");
+
+                return compedium.value > this.findMaxResourceNeeded("compedium") && manuscript.value < this.findMaxResourceNeeded("manuscript");
+            });
+            await this.craftResource("scaffold", ["beam"], () => {
+                let beam = this._host.gamePage.resPool.get("beam");
+                let scaffold = this._host.gamePage.resPool.get("scaffold");
+                return beam.value > this.findMaxResourceNeeded("beam") && scaffold.value < this.findMaxResourceNeeded("scaffold");
+            });
         }
     }
 
@@ -36,5 +82,51 @@ export class ResourceManager extends Manager<ResourceSettings> {
                 }
             }
         }
+    }
+
+    async craftResource(name: string, dependencies: string[], predicate?: () => boolean) {
+        if (predicate != undefined) {
+            if (!predicate()) {
+                return;
+            }
+        }
+
+        if (this.settings.settings[name].enabled) {
+            const btn = this._host.gamePage.workshopTab.craftBtns.find(n => n.model.craft.name == name)
+
+            if (btn.model.craft.unlocked) {
+                let craft = true;
+
+                dependencies.forEach(item => {
+                    let res = this._host.gamePage.resPool.get(item);
+                    if (res.value < Math.min(this.findMaxResourceNeeded(item), res.maxValue == 0 ? Infinity : res.maxValue)) {
+                        craft = craft && false
+                    }
+                });
+
+                if (craft && this.canBuy(btn.model.craft.prices)) {
+                    this.buy(btn);
+                }
+            }
+        }
+    }
+
+    findMaxResourceNeeded(name: string): number {
+        this._host.gamePage.bldTab.render();
+        this._host.gamePage.libraryTab.render();
+        this._host.gamePage.workshopTab.render();
+
+        let allPrices: Price[] = []
+
+        let bldPrices = this._host.gamePage.bldTab.children.map(n => n.model.prices).flatMap(n => n);
+        Array.prototype.push.apply(allPrices, bldPrices);
+
+        let sciencePrices = this._host.gamePage.libraryTab.buttons.filter(n => n.model.metadata.unlocked && n.model.metadata.researched == false).map(n => n.model.prices).flatMap(n => n);
+        Array.prototype.push.apply(allPrices, sciencePrices);
+
+        let workshopPrices = this._host.gamePage.workshopTab.buttons.filter(n => n.model.metadata.unlocked && !n.model.metadata.researched).map(n => n.model.prices).flatMap(n => n);
+        Array.prototype.push.apply(allPrices, workshopPrices);
+
+        return Math.max.apply(null, allPrices.filter(n => n.name == name).map(n => n.val))
     }
 }
