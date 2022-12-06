@@ -7,7 +7,7 @@ import { ReligionItemSettings } from '../settings/ReligionSettings';
 export class ReligionSettingsUi extends SettingsUi {
 
     idPrefix = "religionsettings-";
-    title = "Religion & Workshop";
+    title = "Religion";
 
     _settings: Settings<ReligionItemSettings>
 

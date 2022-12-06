@@ -8,8 +8,8 @@ export class TradeSettings implements Settings<TradeItemSettings> {
     constructor(
         science: TradeItemSettings = {
             autoExplore: new Setting("Auto explore", true),
-            autoEmbassy: new Setting("Auto Embassy", false),
-            autoLizardTrade: new Setting("Auto trade with lizards", false),
+            autoEmbassy: new Setting("Auto Embassy", true),
+            autoLizardTrade: new Setting("Auto trade with lizards", true),
         }) {
         this.settings = science;
     }
