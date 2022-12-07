@@ -81,8 +81,8 @@ export class QoLManager extends Manager<QoLSettings> {
                         start = start || titanium.value < titanium.maxValue * 0.10;
                     }
                     
-                    if (stop) {
-                        smelter.remove.offAll.link.click();
+                    if (start) {
+                        smelter.add.add.link.click();
                     }
                 }
             }
