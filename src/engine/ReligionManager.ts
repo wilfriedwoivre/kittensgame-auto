@@ -17,7 +17,12 @@ export class ReligionManager extends Manager<ReligionSettings> {
                 this._host.gamePage.religionTab.render();
             }
 
-            await this.autoPraise()
+            if (this.settings.settings["autoPraise"].enabled) {
+                await this.autoPraise()
+            }
+            if (this.settings.settings["autoUpgrade"].enabled) {
+                await this.autoUpgrade()
+            }
         }
 
     }
@@ -29,6 +34,17 @@ export class ReligionManager extends Manager<ReligionSettings> {
 
         if (faith.value == faith.maxValue) {
             this.buy(this._host.gamePage.religionTab.praiseBtn);
+        }
+    }
+    
+    async autoUpgrade() {
+        var items = this._host.gamePage.religionTab.rUpgradeButtons.filter(n => n.model.visible && n.model.metadata.unlocked && !n.model.metadata.researched)
+
+        // TODO Maybe find the less expensive
+        var religion = items.find(n => this.canBuy(n.model.prices));
+        if (religion !== undefined) {
+
+            this.buy(religion);
         }
     }
 

@@ -86,6 +86,7 @@ export type GamePage = {
         visible: boolean;
         render: () => void;
         praiseBtn: Button;
+        rUpgradeButtons: Button[]
     }
 
     village: {
