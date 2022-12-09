@@ -26,6 +26,7 @@ export type Model = {
         name: string;
         researched: boolean;
         unlocked: boolean;
+        noStackable: boolean;
         effects: {
             coalPerTickAutoprod: number;
             goldPerTickAutoprod: number;
