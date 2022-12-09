@@ -33,7 +33,7 @@ export class ResourceManager extends Manager<ResourceSettings> {
             await this.craftResource("slab", ["minerals"]);
             await this.craftResource("steel", ["coal"], () => {
                 let iron = this._host.gamePage.resPool.get("iron");
-                return iron.value > (0.8 * iron.maxValue)
+                return iron.value > Math.min(iron.maxValue, this.findMaxResourceNeeded("iron"))
             });
             await this.craftResource("gear", ["steel"], () => {
                 let steel = this._host.gamePage.resPool.get("steel");
