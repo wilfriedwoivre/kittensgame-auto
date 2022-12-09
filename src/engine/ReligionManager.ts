@@ -38,7 +38,7 @@ export class ReligionManager extends Manager<ReligionSettings> {
     }
     
     async autoUpgrade() {
-        var items = this._host.gamePage.religionTab.rUpgradeButtons.filter(n => n.model.visible && !(n.model.metadata.on == 1 && n.model.metadata.noStackable))
+        var items = this._host.gamePage.religionTab.rUpgradeButtons.filter(n => n.model.visible && (!(n.model.metadata.on == 1 && n.model.metadata.noStackable) || !n.model.metadata.noStackable))
 
         // TODO Maybe find the less expensive
         var religion = items.find(n => this.canBuy(n.model.prices));

@@ -27,9 +27,23 @@ export class TradeManager extends Manager<TradeSettings> {
             }
         }
 
+        if (this.settings.settings["autoEmbassy"].enabled) {
+            this.autoEmbassy()
+        }
+
         if (this.settings.settings["autoLizardTrade"].enabled) {
             await this.tradeWithLizard();
         }
+    }
+
+    async autoEmbassy() {
+        var embassyButtons = this._host.gamePage.diplomacyTab.racePanels.map(n => n.embassyButton);
+
+        embassyButtons.forEach(item => {
+            if (this.canBuy(item.model.prices)) {
+                this.buy(item)
+            }
+        })
     }
 
     async tradeWithLizard() {
