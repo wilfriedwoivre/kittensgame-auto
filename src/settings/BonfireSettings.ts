@@ -10,6 +10,8 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
         bonfireItem: BonfireItemSettings = {
             workshop: new Setting("Workshop", true),
 
+            steamworks: new Setting("Steamworks", true),
+
             field: new Setting("Catnip field", true),
             pasture: new Setting("Pasture", true),
             aqueduct: new Setting("Aqueduct", true),
@@ -33,6 +35,7 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
                         
             barn: new Setting("Barn", true),
             warehouse: new Setting("Warehouse", true),
+            harbour: new Setting("harbour", true),
             
         }
     ) {

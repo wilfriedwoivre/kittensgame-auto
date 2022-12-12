@@ -19,6 +19,8 @@ export class BonfireManager extends Manager<BonfireSettings> {
         }
 
         await this.buyBuilding("workshop");
+
+        await this.buyBuilding("steamworks");
         
         await this.buyBuilding("field");
         await this.buyBuilding("pasture", () => { return !this._host.gamePage.ironWill; });
@@ -46,6 +48,7 @@ export class BonfireManager extends Manager<BonfireSettings> {
 
         await this.buyBuilding("barn");
         await this.buyBuilding("warehouse");
+        await this.buyBuilding("harbour");
 
     }
     
