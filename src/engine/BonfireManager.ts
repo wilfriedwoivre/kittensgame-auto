@@ -48,7 +48,7 @@ export class BonfireManager extends Manager<BonfireSettings> {
 
         await this.buyBuilding("barn");
         await this.buyBuilding("warehouse");
-        await this.buyBuilding("harbour");
+        await this.buyBuilding("harbor");
 
     }
     

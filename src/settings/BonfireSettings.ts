@@ -35,7 +35,7 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
                         
             barn: new Setting("Barn", true),
             warehouse: new Setting("Warehouse", true),
-            harbour: new Setting("harbour", true),
+            harbor: new Setting("Harbour", true),
             
         }
     ) {
