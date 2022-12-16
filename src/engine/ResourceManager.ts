@@ -108,10 +108,6 @@ export class ResourceManager extends Manager<ResourceSettings> {
     }
 
     findMaxResourceNeeded(name: string): number {
-        this._host.gamePage.bldTab.render();
-        this._host.gamePage.libraryTab.render();
-        this._host.gamePage.workshopTab.render();
-
         let allPrices: Price[] = []
 
         let bldPrices = this._host.gamePage.bldTab.children.map(n => n.model.prices).flatMap(n => n);

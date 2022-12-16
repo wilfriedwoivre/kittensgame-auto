@@ -96,6 +96,15 @@ export class Engine {
     }
 
     private async _iterate(): Promise<void> {
+
+        this._host.gamePage.bldTab.render();
+        this._host.gamePage.villageTab.render();
+        this._host.gamePage.libraryTab.render();
+        this._host.gamePage.diplomacyTab.render();
+        this._host.gamePage.religionTab.render();
+        this._host.gamePage.workshopTab.render();
+        
+
         this.qolManager.run();
         this.bonfireManager.run();
         this.resourceManager.run();
