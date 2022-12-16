@@ -103,9 +103,6 @@ export class VillageManager extends Manager<VillageSettings> {
                                     }
                                     remainingJobs = remainingJobs - 1;
                                 }
-                                else {
-                                    idealAssign[value] = 0;
-                                }
                             }
                             remainingKittens = remainingKittens - idealAssign[value];
                             break;
