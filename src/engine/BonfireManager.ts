@@ -13,11 +13,6 @@ export class BonfireManager extends Manager<BonfireSettings> {
     }
 
     async run() {
-        if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.bldTab.tabId) 
-        {
-            this._host.gamePage.bldTab.render();
-        }
-
         await this.buyBuilding("workshop");
 
         await this.buyBuilding("steamworks");

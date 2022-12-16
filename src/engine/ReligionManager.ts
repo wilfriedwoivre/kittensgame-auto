@@ -13,9 +13,6 @@ export class ReligionManager extends Manager<ReligionSettings> {
 
     async run() {
         if (this._host.gamePage.religionTab.visible) {
-            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.religionTab.tabId) {
-                this._host.gamePage.religionTab.render();
-            }
 
             if (this.settings.settings["autoPraise"].enabled) {
                 await this.autoPraise()

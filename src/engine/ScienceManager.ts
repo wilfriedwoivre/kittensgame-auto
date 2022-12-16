@@ -13,11 +13,6 @@ export class ScienceManager extends Manager<ScienceSettings> {
 
     async run() {
         if (this._host.gamePage.libraryTab.visible) {
-
-            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.libraryTab.tabId) {
-                this._host.gamePage.libraryTab.render();
-            }
-
             if (this._host.gamePage.libraryTab.buttons.length == 0) {
                 let tabId = this._host.gamePage.libraryTab.tabId;
                 $(`.${tabId}`)[0].click();
@@ -31,10 +26,6 @@ export class ScienceManager extends Manager<ScienceSettings> {
         }
 
         if (this._host.gamePage.workshopTab.visible) {
-
-            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.workshopTab.tabId) {
-                this._host.gamePage.workshopTab.render();
-            }
 
             if (this._host.gamePage.workshopTab.buttons.length == 0) {
                 let tabId = this._host.gamePage.workshopTab.tabId;

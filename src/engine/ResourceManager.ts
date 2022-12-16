@@ -20,10 +20,6 @@ export class ResourceManager extends Manager<ResourceSettings> {
 
         if (this._host.gamePage.workshopTab.visible) {
 
-            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.workshopTab.tabId) {
-                this._host.gamePage.workshopTab.render();
-            }
-
             if (this._host.gamePage.workshopTab.buttons.length == 0) {
                 let tabId = this._host.gamePage.workshopTab.tabId;
                 $(`.${tabId}`)[0].click();
@@ -54,7 +50,7 @@ export class ResourceManager extends Manager<ResourceSettings> {
                 let manuscript = this._host.gamePage.resPool.get("manuscript");
                 let compedium = this._host.gamePage.resPool.get("compedium");
 
-                return compedium.value > this.findMaxResourceNeeded("compedium") && manuscript.value < this.findMaxResourceNeeded("manuscript");
+                return compedium.value < this.findMaxResourceNeeded("compedium") && manuscript.value > this.findMaxResourceNeeded("manuscript");
             });
             await this.craftResource("scaffold", ["beam"], () => {
                 let beam = this._host.gamePage.resPool.get("beam");

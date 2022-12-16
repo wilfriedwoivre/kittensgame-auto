@@ -12,12 +12,6 @@ export class TradeManager extends Manager<TradeSettings> {
     }
 
     async run() {
-        if (this._host.gamePage.diplomacyTab.visible) {
-            if (this._host.gamePage.ui.activeTabId !== this._host.gamePage.diplomacyTab.tabId) {
-                this._host.gamePage.diplomacyTab.render();
-            }
-        }
-
         if (this.settings.settings["autoExplore"].enabled) {
             if (this._host.gamePage.diplomacy.races.filter(n => !n.unlocked && !n.hidden).length > 0) {
                 var power = this._host.gamePage.resPool.get("manpower");

@@ -22,7 +22,6 @@ export class VillageManager extends Manager<VillageSettings> {
     }
 
     async run() {
-        this._host.gamePage.villageTab.render()
         await this.autoManageJobs()
     }
 

@@ -13,8 +13,6 @@ export class QoLManager extends Manager<QoLSettings> {
     }
 
     async run() {
-        this._host.gamePage.bldTab.render();
-
         if (this.settings.settings["autoGather"].enabled) {
             this.autoGather();
         }
