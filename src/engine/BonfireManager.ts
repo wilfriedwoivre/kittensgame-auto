@@ -23,6 +23,7 @@ export class BonfireManager extends Manager<BonfireSettings> {
         await this.buyBuilding("unicornPasture");
 
         await this.buyBuilding("mine");
+        await this.buyBuilding("quarry");
         await this.buyBuilding("lumberMill");
 
         await this.buyBuilding("library");
@@ -33,8 +34,9 @@ export class BonfireManager extends Manager<BonfireSettings> {
             return !this.reachMaxBuildingLimit("smelter");
         })
         await this.buyBuilding("tradepost");
-
         await this.buyBuilding("temple");
+        await this.buyBuilding("chapel");
+        
         await this.buyBuilding("amphitheatre");
 
         await this.buyBuilding("hut", () => { return this._host.gamePage.village.happiness >= 0.80; })

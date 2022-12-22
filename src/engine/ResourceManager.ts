@@ -52,6 +52,13 @@ export class ResourceManager extends Manager<ResourceSettings> {
 
                 return compedium.value < this.findMaxResourceNeeded("compedium") && manuscript.value > this.findMaxResourceNeeded("manuscript");
             });
+            await this.craftResource("blueprint", ["science", "compedium"], () => {
+                let compedium = this._host.gamePage.resPool.get("compedium");
+                let blueprint = this._host.gamePage.resPool.get("blueprint");
+
+                return blueprint.value < this.findMaxResourceNeeded("blueprint") && compedium.value > this.findMaxResourceNeeded("compedium")
+            });
+
             await this.craftResource("scaffold", ["beam"], () => {
                 let beam = this._host.gamePage.resPool.get("beam");
                 let scaffold = this._host.gamePage.resPool.get("scaffold");

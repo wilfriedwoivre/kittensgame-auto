@@ -49,8 +49,8 @@ export class TradeManager extends Manager<TradeSettings> {
                 var wood = this._host.gamePage.resPool.get("wood");
                 var minerals = this._host.gamePage.resPool.get("minerals");
 
-                if (minerals.value > 0, 80 * minerals.maxValue) {
-                    if (wood.value < 0, 50 * wood.maxValue) {
+                if (minerals.value > 0.80 * minerals.maxValue) {
+                    if (wood.value < 0.50 * wood.maxValue) {
                         var race = this._host.gamePage.diplomacyTab.racePanels.find(n => n.race.name == "lizards");
 
                         if (race !== undefined) {

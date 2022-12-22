@@ -18,6 +18,7 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
             unicornPasture: new Setting("Unicorn Pasture", true),
 
             mine: new Setting("Mine", true),
+            quarry: new Setting("Quarry", true),
             lumberMill: new Setting("Lumber Mill", true),
 
             library: new Setting("Library", true),
@@ -27,6 +28,7 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
             smelter: new SettingMaxValue("Smelter", true, 1),
             tradepost: new Setting("Tradepost", true),
             temple: new Setting("Temple", true),
+            chapel: new Setting("Chapel", true),
             
             amphitheatre: new Setting("Amphitheatre", true),
             
