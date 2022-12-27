@@ -39,6 +39,7 @@ export class BonfireSettings implements Settings<BonfireItemSettings>
             warehouse: new Setting("Warehouse", true),
             harbor: new Setting("Harbour", true),
             
+            mint: new Setting("Mint", true)
         }
     ) {
         this.settings = bonfireItem;

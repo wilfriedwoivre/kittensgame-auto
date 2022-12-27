@@ -2,6 +2,7 @@ import { BonfireSettings } from '../settings/BonfireSettings';
 import { UserScript } from '../UserScript';
 import { Manager } from './Manager';
 import { SettingMaxValue } from '../settings/Setting';
+import { Button } from '../types/core';
 
 export class BonfireManager extends Manager<BonfireSettings> {
     settings: BonfireSettings;
@@ -36,7 +37,7 @@ export class BonfireManager extends Manager<BonfireSettings> {
         await this.buyBuilding("tradepost");
         await this.buyBuilding("temple");
         await this.buyBuilding("chapel");
-        
+
         await this.buyBuilding("amphitheatre");
 
         await this.buyBuilding("hut", () => { return this._host.gamePage.village.happiness >= 0.80; })
@@ -47,6 +48,11 @@ export class BonfireManager extends Manager<BonfireSettings> {
         await this.buyBuilding("warehouse");
         await this.buyBuilding("harbor");
 
+        await this.buyBuilding("mint", null, (btn: Button) => { 
+            if (btn.model.metadata.on !== 0) {
+                btn.remove.offAll.link.click();
+            }
+        });
     }
     
     reachMaxBuildingLimit(name: string) {
@@ -57,9 +63,9 @@ export class BonfireManager extends Manager<BonfireSettings> {
             
     }
 
-    async buyBuilding(name: string, predicate?: () => boolean) {
-        if (predicate != undefined) {
-            if (!predicate()) {
+    async buyBuilding(name: string, before?: () => boolean, after?: (btn: Button) => void) {
+        if (before != undefined) {
+            if (!before()) {
                 return;
             }
         }
@@ -70,10 +76,15 @@ export class BonfireManager extends Manager<BonfireSettings> {
                 if (btn.model.enabled) {
                     if (this.canBuy(btn.model.prices)) {
                         this.buy(btn);
+
+                        if (after != undefined) {
+                            after(btn);
+                        }
                     }
                 }
             }
         }
+
     }
 
 
