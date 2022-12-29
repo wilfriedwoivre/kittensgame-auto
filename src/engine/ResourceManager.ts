@@ -115,6 +115,7 @@ export class ResourceManager extends Manager<ResourceSettings> {
     }
 
     findMaxResourceNeeded(name: string): number {
+        let res = this._host.gamePage.resPool.get(name);
         let allPrices: Price[] = []
 
         let bldPrices = this._host.gamePage.bldTab.children.map(n => n.model.prices).flatMap(n => n);
@@ -126,6 +127,6 @@ export class ResourceManager extends Manager<ResourceSettings> {
         let workshopPrices = this._host.gamePage.workshopTab.buttons.filter(n => n.model.metadata.unlocked && !n.model.metadata.researched).map(n => n.model.prices).flatMap(n => n);
         Array.prototype.push.apply(allPrices, workshopPrices);
 
-        return Math.max.apply(null, allPrices.filter(n => n.name == name).map(n => n.val))
+        return Math.min(Math.max.apply(null, allPrices.filter(n => n.name == name).map(n => n.val)), res.maxValue);
     }
 }
