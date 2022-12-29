@@ -29,7 +29,7 @@ export class ResourceManager extends Manager<ResourceSettings> {
             await this.craftResource("slab", ["minerals"]);
             await this.craftResource("steel", ["coal"], () => {
                 let iron = this._host.gamePage.resPool.get("iron");
-                return iron.value > Math.min(iron.maxValue, this.findMaxResourceNeeded("iron"))
+                return iron.value > this.findMaxResourceNeeded("iron")
             });
             await this.craftResource("gear", ["steel"], () => {
                 let steel = this._host.gamePage.resPool.get("steel");
@@ -102,7 +102,7 @@ export class ResourceManager extends Manager<ResourceSettings> {
 
                 dependencies.forEach(item => {
                     let res = this._host.gamePage.resPool.get(item);
-                    if (res.value < Math.min(this.findMaxResourceNeeded(item), res.maxValue == 0 ? Infinity : res.maxValue)) {
+                    if (res.value < this.findMaxResourceNeeded(item)) {
                         craft = craft && false
                     }
                 });
