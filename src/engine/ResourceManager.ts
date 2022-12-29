@@ -127,6 +127,6 @@ export class ResourceManager extends Manager<ResourceSettings> {
         let workshopPrices = this._host.gamePage.workshopTab.buttons.filter(n => n.model.metadata.unlocked && !n.model.metadata.researched).map(n => n.model.prices).flatMap(n => n);
         Array.prototype.push.apply(allPrices, workshopPrices);
 
-        return Math.min(Math.max.apply(null, allPrices.filter(n => n.name == name).map(n => n.val)), res.maxValue);
+        return Math.min(Math.max.apply(null, allPrices.filter(n => n.name == name).map(n => n.val)), res.maxValue - 1);
     }
 }
