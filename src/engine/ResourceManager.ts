@@ -33,38 +33,38 @@ export class ResourceManager extends Manager<ResourceSettings> {
             await this.craftResource("gear", ["steel"], () => {
                 let steel = this._host.gamePage.resPool.get("steel");
                 let gear = this._host.gamePage.resPool.get("gear");
-                return steel.value > this.findMaxResourceNeeded("steel") && gear.value < this.findMaxResourceNeeded("gear")
+                return steel.value > this.findMinResourceNeeded("steel") && gear.value < this.findMaxResourceNeeded("gear")
             });
 
             await this.craftResource("parchment", ["furs"], () => {
-                return this._host.gamePage.resPool.get("furs").value > Math.max(100000, this.findMaxResourceNeeded("furs"));
+                return this._host.gamePage.resPool.get("furs").value > Math.max(100000, this.findMinResourceNeeded("furs"));
             });
 
             await this.craftResource("manuscript", ["culture", "parchment"], () => {
                 let manuscript = this._host.gamePage.resPool.get("manuscript");
                 let parchment = this._host.gamePage.resPool.get("parchment");
 
-                return parchment.value > this.findMaxResourceNeeded("parchment") && manuscript.value < this.findMaxResourceNeeded("manuscript");
+                return parchment.value > this.findMinResourceNeeded("parchment") && manuscript.value < this.findMinResourceNeeded("manuscript");
             });
 
             await this.craftResource("compedium", ["science", "manuscript"], () => {
                 let manuscript = this._host.gamePage.resPool.get("manuscript");
                 let compedium = this._host.gamePage.resPool.get("compedium");
 
-                return compedium.value < this.findMaxResourceNeeded("compedium") && manuscript.value > this.findMaxResourceNeeded("manuscript");
+                return compedium.value < this.findMinResourceNeeded("compedium") && manuscript.value > this.findMinResourceNeeded("manuscript");
             });
 
             await this.craftResource("blueprint", ["science", "compedium"], () => {
                 let compedium = this._host.gamePage.resPool.get("compedium");
                 let blueprint = this._host.gamePage.resPool.get("blueprint");
 
-                return blueprint.value < this.findMaxResourceNeeded("blueprint") && compedium.value > this.findMaxResourceNeeded("compedium")
+                return blueprint.value < this.findMinResourceNeeded("blueprint") && compedium.value > this.findMinResourceNeeded("compedium")
             });
 
             await this.craftResource("scaffold", ["beam"], () => {
                 let beam = this._host.gamePage.resPool.get("beam");
                 let scaffold = this._host.gamePage.resPool.get("scaffold");
-                return beam.value > this.findMaxResourceNeeded("beam") && scaffold.value < this.findMaxResourceNeeded("scaffold");
+                return beam.value > this.findMinResourceNeeded("beam") && scaffold.value < this.findMinResourceNeeded("scaffold");
             });
 
             await this.craftResource("ship", ["starchart", "plate", "scaffold"])
@@ -106,7 +106,7 @@ export class ResourceManager extends Manager<ResourceSettings> {
 
                 dependencies.forEach(item => {
                     let res = this._host.gamePage.resPool.get(item);
-                    if (res.value < this.findMaxResourceNeeded(item)) {
+                    if (res.value < this.findMinResourceNeeded(item)) {
                         craft = craft && false
                     }
                 });
@@ -118,7 +118,7 @@ export class ResourceManager extends Manager<ResourceSettings> {
         }
     }
 
-    findMaxResourceNeeded(name: string): number {
+    findMinResourceNeeded(name: string): number {
         let res = this._host.gamePage.resPool.get(name);
         let allPrices: Price[] = []
 
@@ -131,9 +131,9 @@ export class ResourceManager extends Manager<ResourceSettings> {
         let workshopPrices = this._host.gamePage.workshopTab.buttons.filter(n => n.model.metadata.unlocked && !n.model.metadata.researched).map(n => n.model.prices).flatMap(n => n);
         Array.prototype.push.apply(allPrices, workshopPrices);
 
-        let maxNeeded = Math.max.apply(null, allPrices.filter(n => n.name == name).map(n => n.val))
-        let result = maxNeeded;
-        if (res.maxValue > 0 && maxNeeded > res.maxValue) {
+        let minNeeded = Math.min.apply(null, allPrices.filter(n => n.name == name).map(n => n.val))
+        let result = minNeeded;
+        if (res.maxValue > 0 && minNeeded > res.maxValue) {
             result = 0
         }
         return result;
