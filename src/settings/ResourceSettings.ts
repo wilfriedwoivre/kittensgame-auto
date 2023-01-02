@@ -18,6 +18,7 @@ export class ResourceSettings implements Settings<ResourceItemSettings> {
             compedium: new Setting("compendium", true),
             blueprint: new Setting("Blueprint", true),
             gear: new Setting("gear", true),
+            ship: new Setting("Trade Ship", true)
 
         }
     ) {

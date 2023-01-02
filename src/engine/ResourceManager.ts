@@ -28,31 +28,32 @@ export class ResourceManager extends Manager<ResourceSettings> {
             await this.craftResource("beam", ["wood"]);
             await this.craftResource("slab", ["minerals"]);
             await this.craftResource("plate", ["iron"]);
+            await this.craftResource("steel", ["coal", "iron"]);
 
-            await this.craftResource("steel", ["coal"], () => {
-                let iron = this._host.gamePage.resPool.get("iron");
-                return iron.value > this.findMaxResourceNeeded("iron")
-            });
             await this.craftResource("gear", ["steel"], () => {
                 let steel = this._host.gamePage.resPool.get("steel");
                 let gear = this._host.gamePage.resPool.get("gear");
                 return steel.value > this.findMaxResourceNeeded("steel") && gear.value < this.findMaxResourceNeeded("gear")
             });
+
             await this.craftResource("parchment", ["furs"], () => {
                 return this._host.gamePage.resPool.get("furs").value > Math.max(100000, this.findMaxResourceNeeded("furs"));
             });
+
             await this.craftResource("manuscript", ["culture", "parchment"], () => {
                 let manuscript = this._host.gamePage.resPool.get("manuscript");
                 let parchment = this._host.gamePage.resPool.get("parchment");
 
                 return parchment.value > this.findMaxResourceNeeded("parchment") && manuscript.value < this.findMaxResourceNeeded("manuscript");
             });
+
             await this.craftResource("compedium", ["science", "manuscript"], () => {
                 let manuscript = this._host.gamePage.resPool.get("manuscript");
                 let compedium = this._host.gamePage.resPool.get("compedium");
 
                 return compedium.value < this.findMaxResourceNeeded("compedium") && manuscript.value > this.findMaxResourceNeeded("manuscript");
             });
+
             await this.craftResource("blueprint", ["science", "compedium"], () => {
                 let compedium = this._host.gamePage.resPool.get("compedium");
                 let blueprint = this._host.gamePage.resPool.get("blueprint");
@@ -65,6 +66,8 @@ export class ResourceManager extends Manager<ResourceSettings> {
                 let scaffold = this._host.gamePage.resPool.get("scaffold");
                 return beam.value > this.findMaxResourceNeeded("beam") && scaffold.value < this.findMaxResourceNeeded("scaffold");
             });
+
+            await this.craftResource("ship", ["starchart", "plate", "scaffold"])
         }
     }
 
