@@ -207,6 +207,10 @@ export class VillageManager extends Manager<VillageSettings> {
             if (jobUpdate.find(n => n.value != 0)) {
                 // Update directly because render tab not working
                 this._host.gamePage.ui.render();
+
+                if (this._host.gamePage.villageTab.optimizeJobsBtn.model.visible) {
+                    this.buy(this._host.gamePage.villageTab.optimizeJobsBtn)
+                }
             }
         }
     }

@@ -126,6 +126,7 @@ export type GamePage = {
             model: Model
         }[]
         render: () => void;
+        optimizeJobsBtn: Button
     }
 
     resetAutomatic: () => void
