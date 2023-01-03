@@ -223,11 +223,11 @@ export class VillageManager extends Manager<VillageSettings> {
 
         if (potentialLeaders.length > 0) {
             if (potentialLeaders.length > 1) {
-                potentialLeaders = this._host.gamePage.village.sim.kittens.filter(n => n.skills.hunter > 10000)
+                potentialLeaders = potentialLeaders.filter(n => n.skills.hunter > 10000)
                 if (potentialLeaders.length > 1) {
-                    potentialLeaders = this._host.gamePage.village.sim.kittens.filter(n => n.skills.priest > 10000)
+                    potentialLeaders = potentialLeaders.filter(n => n.skills.priest > 10000)
                     if (potentialLeaders.length > 1) {
-                        potentialLeaders = this._host.gamePage.village.sim.kittens.filter(n => n.skills.farmer > 10000)
+                        potentialLeaders = potentialLeaders.filter(n => n.skills.farmer > 10000)
                     }
                 }
             }
