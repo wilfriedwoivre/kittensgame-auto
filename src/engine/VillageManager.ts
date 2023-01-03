@@ -24,6 +24,7 @@ export class VillageManager extends Manager<VillageSettings> {
     async run() {
         await this.autoManageJobs()
         await this.assignLeader()
+        await this.autoPromote();
     }
 
     async autoManageJobs() {
@@ -234,6 +235,13 @@ export class VillageManager extends Manager<VillageSettings> {
             if (currentLeader != potentialLeaders[0]) {
                 this._host.gamePage.villageTab.censusPanel.census.makeLeader(potentialLeaders[0])
             }
+        }
+    }
+
+    async autoPromote() {
+        let gold = this._host.gamePage.resPool.get("gold");
+        if (gold.value == gold.maxValue) {
+            this.buy(this._host.gamePage.villageTab.promoteKittensBtn);
         }
     }
 }

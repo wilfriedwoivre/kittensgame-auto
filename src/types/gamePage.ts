@@ -115,6 +115,7 @@ export type GamePage = {
                 makeLeader: (kitten: Kitten) => void
             }
         }
+        promoteKittensBtn: Button;
         buttons: {
             assignLinks: {
                 assign: HTMLLinkElement
