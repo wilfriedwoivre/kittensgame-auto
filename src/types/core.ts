@@ -53,6 +53,18 @@ export type Kitten = {
     age: number;
     exp: number;
     job: string;
+    trait: {
+        title: string;
+    }
+    skills: {
+        farmer: number;
+        hunter: number;
+        miner: number;
+        priest: number;
+        woodcutter: number;
+        scholar: number;
+        geologist: number;
+    }
 }
 
 export type Job = {

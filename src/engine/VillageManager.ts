@@ -23,6 +23,7 @@ export class VillageManager extends Manager<VillageSettings> {
 
     async run() {
         await this.autoManageJobs()
+        await this.assignLeader()
     }
 
     async autoManageJobs() {
@@ -215,4 +216,24 @@ export class VillageManager extends Manager<VillageSettings> {
         }
     }
 
+    async assignLeader() {
+        let currentLeader = this._host.gamePage.village.leader;
+
+        let potentialLeaders = this._host.gamePage.village.sim.kittens.filter(n => n.trait.title == "Artisan")
+
+        if (potentialLeaders.length > 0) {
+            if (potentialLeaders.length > 1) {
+                potentialLeaders = this._host.gamePage.village.sim.kittens.filter(n => n.skills.hunter > 10000)
+                if (potentialLeaders.length > 1) {
+                    potentialLeaders = this._host.gamePage.village.sim.kittens.filter(n => n.skills.priest > 10000)
+                    if (potentialLeaders.length > 1) {
+                        potentialLeaders = this._host.gamePage.village.sim.kittens.filter(n => n.skills.farmer > 10000)
+                    }
+                }
+            }
+            if (currentLeader != potentialLeaders[0]) {
+                this._host.gamePage.villageTab.censusPanel.census.makeLeader(potentialLeaders[0])
+            }
+        }
+    }
 }

@@ -90,6 +90,7 @@ export type GamePage = {
     }
 
     village: {
+        leader: Kitten;
         huntAll: () => void;
         happiness: number;
         canHaveLeaderOrPromote: () => boolean;
@@ -109,6 +110,11 @@ export type GamePage = {
     villageTab: {
         tabId: string;
         visible: boolean;
+        censusPanel: {
+            census: {
+                makeLeader: (kitten: Kitten) => void
+            }
+        }
         buttons: {
             assignLinks: {
                 assign: HTMLLinkElement
