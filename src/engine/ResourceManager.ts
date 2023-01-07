@@ -33,38 +33,38 @@ export class ResourceManager extends Manager<ResourceSettings> {
             await this.craftResource("gear", ["steel"], () => {
                 let steel = this._host.gamePage.resPool.get("steel");
                 let gear = this._host.gamePage.resPool.get("gear");
-                return steel.value > this.findMinResourceNeeded("steel") && gear.value < this.findMinResourceNeeded("gear")
+                return steel.value > this.findResourceNeeded("steel") && gear.value < this.findResourceNeeded("gear")
             });
 
             await this.craftResource("parchment", ["furs"], () => {
-                return this._host.gamePage.resPool.get("furs").value > Math.max(100000, this.findMinResourceNeeded("furs"));
+                return this._host.gamePage.resPool.get("furs").value > Math.max(100000, this.findResourceNeeded("furs"));
             });
 
             await this.craftResource("manuscript", ["culture", "parchment"], () => {
                 let manuscript = this._host.gamePage.resPool.get("manuscript");
                 let parchment = this._host.gamePage.resPool.get("parchment");
 
-                return parchment.value > this.findMinResourceNeeded("parchment") && manuscript.value < this.findMinResourceNeeded("manuscript");
+                return parchment.value > this.findResourceNeeded("parchment") && manuscript.value < this.findResourceNeeded("manuscript");
             });
 
             await this.craftResource("compedium", ["science", "manuscript"], () => {
                 let manuscript = this._host.gamePage.resPool.get("manuscript");
                 let compedium = this._host.gamePage.resPool.get("compedium");
 
-                return compedium.value < this.findMinResourceNeeded("compedium") && manuscript.value > this.findMinResourceNeeded("manuscript");
+                return compedium.value < this.findResourceNeeded("compedium") && manuscript.value > this.findResourceNeeded("manuscript");
             });
 
             await this.craftResource("blueprint", ["science", "compedium"], () => {
                 let compedium = this._host.gamePage.resPool.get("compedium");
                 let blueprint = this._host.gamePage.resPool.get("blueprint");
 
-                return blueprint.value < this.findMinResourceNeeded("blueprint") && compedium.value > this.findMinResourceNeeded("compedium")
+                return blueprint.value < this.findResourceNeeded("blueprint") && compedium.value > this.findResourceNeeded("compedium")
             });
 
             await this.craftResource("scaffold", ["beam"], () => {
                 let beam = this._host.gamePage.resPool.get("beam");
                 let scaffold = this._host.gamePage.resPool.get("scaffold");
-                return beam.value > this.findMinResourceNeeded("beam") && scaffold.value < this.findMinResourceNeeded("scaffold");
+                return beam.value > this.findResourceNeeded("beam") && scaffold.value < this.findResourceNeeded("scaffold");
             });
 
             await this.craftResource("ship", ["starchart", "plate", "scaffold"])
@@ -106,7 +106,7 @@ export class ResourceManager extends Manager<ResourceSettings> {
 
                 dependencies.forEach(item => {
                     let res = this._host.gamePage.resPool.get(item);
-                    if (res.value < this.findMinResourceNeeded(item)) {
+                    if (res.value < this.findResourceNeeded(item)) {
                         craft = craft && false
                     }
                 });
@@ -118,7 +118,7 @@ export class ResourceManager extends Manager<ResourceSettings> {
         }
     }
 
-    findMinResourceNeeded(name: string): number {
+    findResourceNeeded(name: string): number {
         let res = this._host.gamePage.resPool.get(name);
         let allPrices: Price[] = []
 
@@ -132,10 +132,18 @@ export class ResourceManager extends Manager<ResourceSettings> {
         Array.prototype.push.apply(allPrices, workshopPrices);
 
         let minNeeded = Math.min.apply(null, allPrices.filter(n => n.name == name).map(n => n.val))
-        let result = minNeeded;
+        let min = minNeeded;
         if (res.maxValue > 0 && minNeeded > res.maxValue) {
-            result = 0
+            min = 0
         }
-        return result;
+
+        let maxNeeded = Math.max.apply(null, allPrices.filter(n => n.name == name).map(n => n.val))
+        let max = maxNeeded;
+        if (res.maxValue > 0 && maxNeeded > res.maxValue) {
+            max = res.maxValue
+        }
+
+        let moy = (min + max) / 2;
+        return moy;
     }
 }
